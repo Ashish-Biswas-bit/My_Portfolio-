@@ -24,22 +24,48 @@ const sections = [
 
 export default function DashboardHome() {
   const [counts, setCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCounts = async () => {
-      const result: Record<string, number> = {};
-      for (const s of sections) {
-        try {
-          const snap = await getCountFromServer(collection(db, s.col));
-          result[s.col] = snap.data().count;
-        } catch {
-          result[s.col] = 0;
+      try {
+        const result: Record<string, number> = {};
+        for (const s of sections) {
+          try {
+            const snap = await getCountFromServer(collection(db, s.col));
+            result[s.col] = snap.data().count;
+          } catch (err) {
+            console.error(`Error fetching count for ${s.col}:`, err);
+            result[s.col] = 0;
+          }
         }
+        setCounts(result);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching dashboard counts:", err);
+        setError("Failed to load dashboard data");
+        setCounts({});
+      } finally {
+        setLoading(false);
       }
-      setCounts(result);
     };
     fetchCounts();
   }, []);
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-500 text-lg">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -63,7 +89,11 @@ export default function DashboardHome() {
                 <s.icon size={20} />
               </div>
               <span className="text-2xl font-bold" style={{ color: s.color }}>
-                {counts[s.col] ?? "—"}
+                {loading ? (
+                  <span className="text-gray-400">...</span>
+                ) : (
+                  counts[s.col] ?? "—"
+                )}
               </span>
             </div>
             <h3 className="text-white font-semibold group-hover:text-cyan-400 transition-colors">
