@@ -16,6 +16,7 @@ const nextConfig = {
     ],
   },
   webpack(config, { isServer }) {
+    // Handle Node.js modules that shouldn't be bundled for the browser
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -25,24 +26,29 @@ const nextConfig = {
         util: false,
         stream: false,
         buffer: false,
+        net: false,
+        tls: false,
+      };
+
+      // Prevent Firebase Firestore from being imported in client-side code
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        '@firebase/firestore': false,
+        'firebase/firestore': false,
       };
     }
 
-    config.resolve.alias = {
-      ...(config.resolve.alias || {}),
-      'firebase/firestore': path.resolve(
-        __dirname,
-        'node_modules/firebase/firestore/dist/esm/index.esm.js'
-      ),
-      '@firebase/firestore': path.resolve(
-        __dirname,
-        'node_modules/@firebase/firestore/dist/index.esm.js'
-      ),
-      '@firebase/firestore/dist/index.node.mjs': path.resolve(
-        __dirname,
-        'node_modules/@firebase/firestore/dist/index.esm.js'
-      ),
-    };
+    // Ignore problematic node modules
+    config.ignoreWarnings = [
+      ...config.ignoreWarnings || [],
+      {
+        module: /protobufjs/,
+      },
+      {
+        module: /@firebase\/firestore/,
+      },
+    ];
+
     return config;
   },
 };
