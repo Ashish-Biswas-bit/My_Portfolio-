@@ -15,7 +15,19 @@ const nextConfig = {
       },
     ],
   },
-  webpack(config) {
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        crypto: false,
+        util: false,
+        stream: false,
+        buffer: false,
+      };
+    }
+
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
       'firebase/firestore': path.resolve(
