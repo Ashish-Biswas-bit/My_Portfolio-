@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase";
-import { collection, getCountFromServer } from "firebase/firestore";
 import Link from "next/link";
 import {
   FiFolder,
@@ -30,17 +28,12 @@ export default function DashboardHome() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const result: Record<string, number> = {};
-        for (const s of sections) {
-          try {
-            const snap = await getCountFromServer(collection(db, s.col));
-            result[s.col] = snap.data().count;
-          } catch (err) {
-            console.error(`Error fetching count for ${s.col}:`, err);
-            result[s.col] = 0;
-          }
+        const response = await fetch("/api/dashboard/counts");
+        if (!response.ok) {
+          throw new Error("Failed to fetch counts");
         }
-        setCounts(result);
+        const data = await response.json();
+        setCounts(data);
         setError(null);
       } catch (err) {
         console.error("Error fetching dashboard counts:", err);
