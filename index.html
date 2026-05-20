@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Portfolio</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+	<!-- Firebase SDKs -->
+	<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+	<!-- Header Section -->
+	<header class="main-header">
+		<div class="container header-flex">
+			<div class="logo">
+				<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo" class="logo-img" id="logo-img">
+				<span class="logo-text" id="logo-text">Ashish Biswas</span>
+			</div>
+			<button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+				<span></span><span></span><span></span>
+			</button>
+			<nav class="header-nav" id="header-nav">
+				<ul class="nav-links">
+					<li><a href="#hero">Home</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#services">Services</a></li>
+					<li><a href="#projects">Projects</a></li>
+					<li><a href="#skills">Skills</a></li>
+					<li><a href="#testimonials">Reviews</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+				<a href="https://wa.me/8801744502112" class="header-cta-btn" target="_blank" id="header-cta-btn">Get Free Consultant</a>
+			</nav>
+		</div>
+	</header>
+
+	<!-- Hero Section -->
+	<section id="hero" class="hero-section">
+		<div class="hero-bg-shapes">
+			<div class="shape shape-1"></div>
+			<div class="shape shape-2"></div>
+			<div class="shape shape-3"></div>
+		</div>
+		<div class="container hero-flex">
+			<div class="hero-info">
+				<span class="greeting-badge" id="hero-greeting">Hi, I'm</span>
+				<h1 class="hero-title"><span class="highlight" id="hero-name">ASHISH BISWAS</span></h1>
+				<h2 class="hero-role" id="hero-role"></h2>
+				<p class="hero-desc" id="hero-desc">I create modern, responsive websites, desktop apps, and engaging 2D web games that help businesses grow and stand out online.</p>
+				<div class="hero-actions">
+					<a href="#projects" class="cta-btn" id="view-projects-btn">
+						<span>View Projects</span>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+					</a>
+					<a href="#contact" class="cta-btn-outline">Contact Me</a>
+				</div>
+			</div>
+
+			<div class="hero-image">
+				<div class="hero-image-wrapper">
+					<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Profile Photo" id="hero-photo">
+					<div class="hero-image-ring"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- About Section -->
+	<section id="about" class="about-section fade-in-up">
+		<div class="container">
+			<div class="section-header">
+				<span class="section-tag">About Me</span>
+				<h2>Who I Am</h2>
+				<p class="section-subtitle">A passionate developer driven by curiosity</p>
+			</div>
+			<div class="about-content">
+				<div class="about-image">
+					<img src="" alt="About Photo" id="about-photo" class="about-photo">
+				</div>
+				<div class="about-text" id="about-description">
+					<!-- Loaded from Firebase -->
+				</div>
+				<div class="about-stats" id="about-stats">
+					<div class="stat-item">
+						<span class="stat-number" data-target="0">0</span><span class="stat-suffix">+</span>
+						<span class="stat-label">Projects Completed</span>
+					</div>
+					<div class="stat-item">
+						<span class="stat-number" data-target="0">0</span><span class="stat-suffix">+</span>
+						<span class="stat-label">Years Experience</span>
+					</div>
+					<div class="stat-item">
+						<span class="stat-number" data-target="0">0</span><span class="stat-suffix">+</span>
+						<span class="stat-label">Happy Clients</span>
+					</div>
+					<div class="stat-item">
+						<span class="stat-number" data-target="0">0</span><span class="stat-suffix">+</span>
+						<span class="stat-label">Technologies</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Services Section -->
+	<section id="services" class="services-section fade-in-up">
+		<div class="container">
+			<div class="section-header">
+				<span class="section-tag">What I Do</span>
+				<h2>My Services</h2>
+				<p class="section-subtitle">Solutions tailored to your needs</p>
+			</div>
+			<div class="services-grid" id="services-grid">
+				<div class="service-card">
+					<div class="service-icon">
+						<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+					</div>
+					<h3>Web Development</h3>
+					<p>Modern, responsive websites built with the latest technologies. From landing pages to complex web applications.</p>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+					</div>
+					<h3>Software Development</h3>
+					<p>Desktop applications and software solutions designed for performance, reliability, and great user experience.</p>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+					</div>
+					<h3>2D Game Development</h3>
+					<p>Engaging browser-based 2D games with smooth animations, interactive gameplay, and captivating visuals.</p>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+					</div>
+					<h3>Responsive Design</h3>
+					<p>Pixel-perfect designs that look and work beautifully across all devices — mobile, tablet, and desktop.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Projects Section -->
+	<section id="projects" class="projects-section fade-in-up">
+		<div class="container">
+			<div class="section-header">
+				<span class="section-tag">Portfolio</span>
+				<h2>Featured Projects</h2>
+				<p class="section-subtitle">A selection of my recent work</p>
+			</div>
+			<div class="projects-list" id="projects-list">
+				<!-- Dynamic: loaded from Firebase -->
+			</div>
+			<div class="section-footer">
+				<button class="see-all-btn" onclick="showAllProjects()">
+					<span>View All Projects</span>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+				</button>
+			</div>
+		</div>
+	</section>
+
+	<!-- Project Modals -->
+	<div id="project-modal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeProjectModal()">&times;</span>
+			<div id="modal-body">
+				<!-- Dynamic content here -->
+			</div>
+		</div>
+	</div>
+
+	<!-- Skills Section -->
+	<section id="skills" class="skills-section fade-in-up">
+		<div class="section-header">
+			<span class="section-tag">Expertise</span>
+			<h2>Skills & Technologies</h2>
+			<p class="section-subtitle">Tools and technologies I work with</p>
+		</div>
+		<div class="skills-grid" id="skills-grid">
+			<!-- Dynamic: loaded from Firebase -->
+		</div>
+	</section>
+
+	<!-- Contact Section -->
+	<section id="contact" class="contact-section fade-in-up">
+		<div class="section-header">
+			<span class="section-tag">Get in Touch</span>
+			<h2>Contact</h2>
+			<p class="section-subtitle">Let's discuss your next project</p>
+		</div>
+		<div class="contact-info" id="contact-info">
+			<!-- Dynamic: loaded from Firebase -->
+		</div>
+	</section>
+
+	<!-- Testimonials Section -->
+	<section id="testimonials" class="testimonials-section fade-in-up">
+		<div class="container">
+			<div class="section-header">
+				<span class="section-tag">Client Feedback</span>
+				<h2>What People Say</h2>
+				<p class="section-subtitle">Reviews from clients I've worked with</p>
+			</div>
+			<div class="testimonials-grid" id="testimonials-grid">
+				<div class="testimonial-card">
+					<div class="testimonial-stars">★★★★★</div>
+					<p class="testimonial-text">"Ashish delivered an outstanding website for our business. His attention to detail and communication throughout the project was excellent."</p>
+					<div class="testimonial-author">
+						<div class="testimonial-avatar">R</div>
+						<div>
+							<span class="testimonial-name">Rahul K.</span>
+							<span class="testimonial-role">Business Owner</span>
+						</div>
+					</div>
+				</div>
+				<div class="testimonial-card">
+					<div class="testimonial-stars">★★★★★</div>
+					<p class="testimonial-text">"Very skilled developer! He built us an amazing web application. On time, clean code, and very professional. Highly recommended."</p>
+					<div class="testimonial-author">
+						<div class="testimonial-avatar">S</div>
+						<div>
+							<span class="testimonial-name">Sumon D.</span>
+							<span class="testimonial-role">Startup Founder</span>
+						</div>
+					</div>
+				</div>
+				<div class="testimonial-card">
+					<div class="testimonial-stars">★★★★★</div>
+					<p class="testimonial-text">"The 2D game he developed for our school project was incredible. Creative, fun, and delivered ahead of schedule. Great to work with!"</p>
+					<div class="testimonial-author">
+						<div class="testimonial-avatar">A</div>
+						<div>
+							<span class="testimonial-name">Amit P.</span>
+							<span class="testimonial-role">Student</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- CTA Banner -->
+	<section class="cta-banner fade-in-up">
+		<div class="container">
+			<div class="cta-banner-content">
+				<h2>Have a project in mind?</h2>
+				<p>Let's work together to bring your ideas to life. I'm always open to new opportunities and interesting projects.</p>
+				<div class="cta-banner-actions">
+					<a href="https://wa.me/8801744502112" class="cta-btn" target="_blank" id="cta-banner-btn">
+						<span>Let's Talk</span>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+					</a>
+					<a href="mailto:ashishbiswas@example.com" class="cta-btn-outline" id="cta-banner-email">Email Me</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="fade-in-up">
+		<div class="container footer-content">
+			<p id="footer-text">&copy; 2026 Ashish Biswas. All rights reserved.</p>
+		</div>
+	</footer>
+
+	<script src="firebase-config.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>

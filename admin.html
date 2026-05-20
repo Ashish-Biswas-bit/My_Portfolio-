@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Portfolio</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-card">
+            <h1>Admin Login</h1>
+            <p>Sign in to manage your portfolio</p>
+            <form id="login-form" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required autocomplete="current-password">
+                </div>
+                <div id="login-error" class="error-msg"></div>
+                <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Portfolio Admin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="hero" onclick="switchSection('hero', this)">Hero Section</a>
+                <a href="#" class="nav-item" data-section="about" onclick="switchSection('about', this)">About</a>
+                <a href="#" class="nav-item" data-section="services" onclick="switchSection('services', this)">Services</a>
+                <a href="#" class="nav-item" data-section="projects" onclick="switchSection('projects', this)">Projects</a>
+                <a href="#" class="nav-item" data-section="skills" onclick="switchSection('skills', this)">Skills</a>
+                <a href="#" class="nav-item" data-section="testimonials" onclick="switchSection('testimonials', this)">Testimonials</a>
+                <a href="#" class="nav-item" data-section="contact" onclick="switchSection('contact', this)">Contact</a>
+                <a href="#" class="nav-item" data-section="settings" onclick="switchSection('settings', this)">Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="index.html" class="nav-item" target="_blank">View Site</a>
+                <button class="btn btn-logout" onclick="handleLogout()">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-topbar">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">&#9776;</button>
+                <h3 id="section-title">Hero Section</h3>
+                <span id="admin-user-email"></span>
+            </div>
+
+            <!-- Hero Section Editor -->
+            <div id="section-hero" class="section-content active">
+                <div class="card">
+                    <h3>Hero / Profile Info</h3>
+                    <form id="hero-form" onsubmit="return saveHero(event)">
+                        <div class="form-group">
+                            <label>Greeting Text</label>
+                            <input type="text" id="hero-greeting" placeholder="Hi, I'm">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="hero-name" placeholder="ASHISH BISWAS">
+                        </div>
+                        <div class="form-group">
+                            <label>Roles (one per line)</label>
+                            <textarea id="hero-roles" rows="5" placeholder="Web Developer&#10;Software Developer&#10;2D Game Developer"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="hero-desc" rows="3" placeholder="I create modern, responsive websites..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>CTA Link (WhatsApp / other)</label>
+                            <input type="url" id="hero-cta-link" placeholder="https://wa.me/...">
+                        </div>
+                        <div class="form-group">
+                            <label>CTA Button Text</label>
+                            <input type="text" id="hero-cta-text" placeholder="Get Free Consultant">
+                        </div>
+                        <div class="form-group">
+                            <label>Profile Photo</label>
+                            <div class="image-upload-area">
+                                <img id="hero-photo-preview" class="img-preview" src="" alt="Preview" style="display:none;">
+                                <input type="file" id="hero-photo-input" accept="image/*" onchange="previewImage(this, 'hero-photo-preview')">
+                                <button type="button" class="btn btn-secondary" onclick="uploadHeroPhoto()">Upload Photo</button>
+                                <span id="hero-photo-status" style="color:#888;font-size:0.9em;"></span>
+                                <input type="hidden" id="hero-photo-url">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Site Logo (Header)</label>
+                            <div class="image-upload-area">
+                                <img id="hero-logo-preview" class="img-preview small" src="" alt="Logo Preview" style="display:none;">
+                                <input type="file" id="hero-logo-input" accept="image/*" onchange="previewImage(this, 'hero-logo-preview')">
+                                <button type="button" class="btn btn-secondary" onclick="uploadHeroLogo()">Upload Logo</button>
+                                <span id="hero-logo-status" style="color:#888;font-size:0.9em;"></span>
+                                <input type="hidden" id="hero-logo-url">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Hero Section</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- About Section Editor -->
+            <div id="section-about" class="section-content">
+                <div class="card">
+                    <h3>About Section</h3>
+                    <form id="about-form" onsubmit="return saveAbout(event)">
+                        <div class="form-group">
+                            <label>About Description</label>
+                            <textarea id="about-description" rows="5" placeholder="Write about yourself..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>About Photo</label>
+                            <div class="image-upload-area">
+                                <img id="about-photo-preview" class="img-preview" src="" alt="Preview" style="display:none;">
+                                <input type="file" id="about-photo-input" accept="image/*" onchange="previewImage(this, 'about-photo-preview')">
+                                <button type="button" class="btn btn-secondary" onclick="uploadAboutPhoto()">Upload Photo</button>
+                                <span id="about-photo-status" style="color:#888;font-size:0.9em;"></span>
+                                <input type="hidden" id="about-photo-url">
+                            </div>
+                        </div>
+                        <h4 style="margin:18px 0 10px;">Stats</h4>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                            <div class="form-group">
+                                <label>Stat 1 Value</label>
+                                <input type="number" id="about-stat1-value" min="0" placeholder="20">
+                            </div>
+                            <div class="form-group">
+                                <label>Stat 1 Label</label>
+                                <input type="text" id="about-stat1-label" placeholder="Projects Completed">
+                            </div>
+                            <div class="form-group">
+                                <label>Stat 2 Value</label>
+                                <input type="number" id="about-stat2-value" min="0" placeholder="2">
+                            </div>
+                            <div class="form-group">
+                                <label>Stat 2 Label</label>
+                                <input type="text" id="about-stat2-label" placeholder="Years Experience">
+                            </div>
+                            <div class="form-group">
+                                <label>Stat 3 Value</label>
+                                <input type="number" id="about-stat3-value" min="0" placeholder="15">
+                            </div>
+                            <div class="form-group">
+                                <label>Stat 3 Label</label>
+                                <input type="text" id="about-stat3-label" placeholder="Happy Clients">
+                            </div>
+                            <div class="form-group">
+                                <label>Stat 4 Value</label>
+                                <input type="number" id="about-stat4-value" min="0" placeholder="10">
+                            </div>
+                            <div class="form-group">
+                                <label>Stat 4 Label</label>
+                                <input type="text" id="about-stat4-label" placeholder="Technologies">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save About Section</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Services Section Editor -->
+            <div id="section-services" class="section-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Services</h3>
+                        <button class="btn btn-primary" onclick="openServiceForm()">+ Add Service</button>
+                    </div>
+                    <div id="services-list" class="items-list">
+                        <!-- Dynamic service cards -->
+                    </div>
+                </div>
+
+                <!-- Service Form Modal -->
+                <div id="service-form-modal" class="admin-modal" style="display:none;">
+                    <div class="admin-modal-content modal-sm">
+                        <span class="admin-modal-close" onclick="closeServiceForm()">&times;</span>
+                        <h3 id="service-form-title">Add Service</h3>
+                        <form id="service-form" onsubmit="return saveService(event)">
+                            <input type="hidden" id="service-edit-id">
+                            <div class="form-group">
+                                <label>Service Title</label>
+                                <input type="text" id="service-title" required placeholder="e.g. Web Development">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="service-description" rows="3" required placeholder="Describe the service..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Icon (SVG HTML or emoji)</label>
+                                <textarea id="service-icon" rows="3" placeholder="Paste SVG code or an emoji like 🌐"></textarea>
+                                <small>Paste an SVG icon or use an emoji. This will display as the service icon.</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Display Order</label>
+                                <input type="number" id="service-order" value="0" min="0">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Service</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials Section Editor -->
+            <div id="section-testimonials" class="section-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Testimonials / Reviews</h3>
+                        <button class="btn btn-primary" onclick="openTestimonialForm()">+ Add Testimonial</button>
+                    </div>
+                    <div id="testimonials-list" class="items-list">
+                        <!-- Dynamic testimonial cards -->
+                    </div>
+                </div>
+
+                <!-- Testimonial Form Modal -->
+                <div id="testimonial-form-modal" class="admin-modal" style="display:none;">
+                    <div class="admin-modal-content modal-sm">
+                        <span class="admin-modal-close" onclick="closeTestimonialForm()">&times;</span>
+                        <h3 id="testimonial-form-title">Add Testimonial</h3>
+                        <form id="testimonial-form" onsubmit="return saveTestimonial(event)">
+                            <input type="hidden" id="testimonial-edit-id">
+                            <div class="form-group">
+                                <label>Person Name</label>
+                                <input type="text" id="testimonial-name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label>Role / Title</label>
+                                <input type="text" id="testimonial-role" placeholder="CEO, Company">
+                            </div>
+                            <div class="form-group">
+                                <label>Quote / Review</label>
+                                <textarea id="testimonial-quote" rows="4" required placeholder="What they said about your work..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Avatar Photo</label>
+                                <div class="image-upload-area">
+                                    <img id="testimonial-avatar-preview" class="img-preview small" src="" alt="Preview" style="display:none;">
+                                    <input type="file" id="testimonial-avatar-input" accept="image/*" onchange="previewImage(this, 'testimonial-avatar-preview')">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="uploadTestimonialAvatar()">Upload Avatar</button>
+                                    <span id="testimonial-avatar-status" style="color:#888;font-size:0.9em;"></span>
+                                    <input type="hidden" id="testimonial-avatar-url">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Display Order</label>
+                                <input type="number" id="testimonial-order" value="0" min="0">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Testimonial</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Section Editor -->
+            <div id="section-projects" class="section-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Projects</h3>
+                        <button class="btn btn-primary" onclick="openProjectForm()">+ Add Project</button>
+                    </div>
+                    <div id="projects-list" class="items-list">
+                        <!-- Dynamic project cards -->
+                    </div>
+                </div>
+
+                <!-- Project Form Modal -->
+                <div id="project-form-modal" class="admin-modal" style="display:none;">
+                    <div class="admin-modal-content">
+                        <span class="admin-modal-close" onclick="closeProjectForm()">&times;</span>
+                        <h3 id="project-form-title">Add Project</h3>
+                        <form id="project-form" onsubmit="return saveProject(event)">
+                            <input type="hidden" id="project-edit-id">
+                            <div class="form-group">
+                                <label>Project Title</label>
+                                <input type="text" id="project-title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Short Description</label>
+                                <textarea id="project-short-desc" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Full Details</label>
+                                <textarea id="project-details" rows="5" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Live Demo URL</label>
+                                <input type="url" id="project-live-url" placeholder="https://your-project-link.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Project Status</label>
+                                <select id="project-status">
+                                    <option value="live">Live (Running)</option>
+                                    <option value="not-live">Not Live</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Project Images (select multiple at once or add more)</label>
+                                <div id="project-uploaded-gallery" class="uploaded-gallery"></div>
+                                <div class="image-upload-area">
+                                    <label class="file-select-btn btn btn-secondary" for="project-images-input">+ Select Images</label>
+                                    <input type="file" id="project-images-input" accept="image/*" multiple onchange="handleProjectImagesSelect(this)" style="display:none;">
+                                    <span id="project-upload-status" class="upload-status"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Display Order</label>
+                                <input type="number" id="project-order" value="0" min="0">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Project</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Section Editor -->
+            <div id="section-skills" class="section-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Skills</h3>
+                        <button class="btn btn-primary" onclick="openSkillForm()">+ Add Skill</button>
+                    </div>
+                    <div id="skills-list" class="items-list skills-admin-grid">
+                        <!-- Dynamic skill items -->
+                    </div>
+                </div>
+
+                <!-- Skill Form Modal -->
+                <div id="skill-form-modal" class="admin-modal" style="display:none;">
+                    <div class="admin-modal-content modal-sm">
+                        <span class="admin-modal-close" onclick="closeSkillForm()">&times;</span>
+                        <h3 id="skill-form-title">Add Skill</h3>
+                        <form id="skill-form" onsubmit="return saveSkill(event)">
+                            <input type="hidden" id="skill-edit-id">
+                            <div class="form-group">
+                                <label>Skill Name</label>
+                                <input type="text" id="skill-name" required placeholder="e.g. JavaScript">
+                            </div>
+                            <div class="form-group">
+                                <label>Icon</label>
+                                <img id="skill-icon-preview" class="img-preview small" src="" alt="Preview" style="display:none; margin-bottom:8px;">
+                                <small style="color:#27ae60;">Icon auto-detects from skill name. Or set a custom URL / upload below:</small>
+                                <input type="url" id="skill-icon-url" placeholder="Auto-detected or paste custom URL">
+                                <div class="image-upload-area" style="margin-top:6px;">
+                                    <input type="file" id="skill-icon-input" accept="image/*" onchange="previewImage(this, 'skill-icon-preview')">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="uploadSkillIcon()">Upload Custom Icon</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Display Order</label>
+                                <input type="number" id="skill-order" value="0" min="0">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Skill</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Section Editor -->
+            <div id="section-contact" class="section-content">
+                <div class="card">
+                    <h3>Contact Information</h3>
+                    <form id="contact-form" onsubmit="return saveContact(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="contact-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="contact-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" id="contact-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="contact-location" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook URL</label>
+                            <input type="url" id="contact-facebook">
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook Display Text</label>
+                            <input type="text" id="contact-facebook-text" placeholder="facebook.com/ashish">
+                        </div>
+                        <div class="form-group">
+                            <label>GitHub URL</label>
+                            <input type="url" id="contact-github">
+                        </div>
+                        <div class="form-group">
+                            <label>GitHub Display Text</label>
+                            <input type="text" id="contact-github-text" placeholder="github.com/username">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Contact</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="section-settings" class="section-content">
+                <div class="card">
+                    <h3>Site Settings</h3>
+                    <form id="settings-form" onsubmit="return saveSettings(event)">
+                        <div class="form-group">
+                            <label>Site Title (browser tab)</label>
+                            <input type="text" id="settings-title" placeholder="My Portfolio">
+                        </div>
+                        <div class="form-group">
+                            <label>Footer Text</label>
+                            <input type="text" id="settings-footer" placeholder="© 2026 Ashish Biswas. All rights reserved.">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                    </form>
+                </div>
+
+                <div class="card" style="margin-top:24px;">
+                    <h3>Seed Default Data</h3>
+                    <p>Click below to populate Firebase with your current portfolio data. <strong>Only do this once</strong> when setting up.</p>
+                    <button class="btn btn-secondary" onclick="seedDefaultData()">Seed Default Data</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
