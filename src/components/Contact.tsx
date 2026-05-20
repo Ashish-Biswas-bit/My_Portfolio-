@@ -7,7 +7,7 @@ import { FiMail, FiSend, FiGithub, FiUser, FiMessageSquare } from "react-icons/f
 import { FaWhatsapp } from "react-icons/fa";
 import { FiLinkedin } from "react-icons/fi";
 import { onSnapshot, doc } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "@/lib/firebase-db";
 
 interface SiteSettings {
   email: string;

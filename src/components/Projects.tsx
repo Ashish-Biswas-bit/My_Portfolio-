@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 import { FiGithub, FiExternalLink } from "react-icons/fi";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import type { ProjectData } from "@/lib/useFirestore";
 

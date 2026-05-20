@@ -1,15 +1,6 @@
 // src/firebase.ts
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
-
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+// Re-exports from the modular lib/ structure
+// This file exists for backward compatibility — please use @/lib/firebase, @/lib/firebase-db, or @/lib/firebase-auth instead.
+export { db } from "@/lib/firebase-db";
+export { auth } from "@/lib/firebase-auth";
+export { default as app } from "@/lib/firebase";

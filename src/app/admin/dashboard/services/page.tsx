@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   onSnapshot, query, orderBy,
 } from "firebase/firestore";
 import toast, { Toaster } from "react-hot-toast";
-import { FiPlus, FiTrash2, FiEdit2, FiX } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiEdit2
+, FiX } from "react-icons/fi";
 import type { ServiceData } from "@/lib/useFirestore";
 
 const empty: Omit<ServiceData, "id"> = {

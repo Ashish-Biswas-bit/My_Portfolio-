@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { collection, getCountFromServer } from "firebase/firestore";
 
 const sections = ["projects", "skills", "services", "experience", "testimonials", "education"];

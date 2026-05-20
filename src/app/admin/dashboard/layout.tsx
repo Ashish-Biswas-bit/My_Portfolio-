@@ -2,7 +2,7 @@
 
 import { useEffect, useState, ReactNode } from "react";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-auth";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {

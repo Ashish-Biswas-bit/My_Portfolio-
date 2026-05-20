@@ -4,7 +4,7 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { FiArrowRight, FiDownload } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { doc, getDoc } from "firebase/firestore";
 import type { HeroData } from "@/lib/useFirestore";
 

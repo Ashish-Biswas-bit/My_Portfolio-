@@ -14,7 +14,7 @@ import {
   SiMysql,
 } from "react-icons/si";
 import { FaJava, FaGamepad, FaDesktop } from "react-icons/fa";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import type { SkillData } from "@/lib/useFirestore";
 import { IconType } from "react-icons";

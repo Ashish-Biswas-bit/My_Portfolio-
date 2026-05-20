@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 import { FiStar } from "react-icons/fi";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import type { TestimonialData } from "@/lib/useFirestore";
 

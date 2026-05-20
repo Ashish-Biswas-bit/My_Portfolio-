@@ -11,7 +11,7 @@ import {
   FiLayers,
 } from "react-icons/fi";
 import { FaGamepad } from "react-icons/fa";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import type { ServiceData } from "@/lib/useFirestore";
 export default function Services() {

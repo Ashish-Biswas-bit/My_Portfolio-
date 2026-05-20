@@ -30,11 +30,13 @@ const nextConfig = {
         tls: false,
       };
 
-      // Prevent Firebase Firestore from being imported in client-side code
+      // Force @firebase/firestore to use the browser ESM build for client bundles
+      // The package.json exports field resolves to the Node.js build by default,
+      // which pulls in @grpc/proto-loader → protobufjs → Node.js native modules (fs, path)
+      // that are unavailable in the browser.
       config.resolve.alias = {
         ...config.resolve.alias,
-        '@firebase/firestore': false,
-        'firebase/firestore': false,
+        '@firebase/firestore': path.resolve('./node_modules/@firebase/firestore/dist/index.esm.js'),
       };
     }
 

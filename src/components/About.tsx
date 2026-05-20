@@ -16,7 +16,7 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { doc, onSnapshot } from "firebase/firestore";
 import type { AboutData } from "@/lib/useFirestore";
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FiGithub, FiLinkedin, FiMail, FiHeart, FiArrowUp } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-db";
 import { doc, onSnapshot } from "firebase/firestore";
 import type { SiteSettings } from "@/lib/useFirestore";
 
