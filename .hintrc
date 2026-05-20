@@ -3,21 +3,18 @@
     "development"
   ],
   "hints": {
-<<<<<<< HEAD
     "typescript-config/consistent-casing": "off",
-=======
     "no-inline-styles": "off",
     "disown-opener": "off",
->>>>>>> b5e77c1f549cbe5fc53f576e09a4da2a9f02fd55
     "compat-api/css": [
       "default",
       {
         "ignore": [
-<<<<<<< HEAD
           "scrollbar-width",
           "scrollbar-color",
           "scrollbar-width: thin",
-          "-webkit-mask"
+          "-webkit-mask",
+          "backdrop-filter"
         ]
       }
     ],
@@ -35,13 +32,6 @@
         "button-name": "off",
         "link-name": "off"
       }
-    ],
-    "no-inline-styles": "off"
-=======
-          "backdrop-filter"
-        ]
-      }
     ]
->>>>>>> b5e77c1f549cbe5fc53f576e09a4da2a9f02fd55
   }
 }
