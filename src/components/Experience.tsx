@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 import { FiCode, FiBookOpen, FiTrendingUp, FiAward } from "react-icons/fi";
-import { db } from "@/lib/firebase-db";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import type { ExperienceData } from "@/lib/useFirestore";
+import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
+import type { ExperienceData } from "@/lib/useContent";
 
 // ...existing code...
 
@@ -17,7 +16,7 @@ export default function Experience() {
     const q = query(collection(db, "experience"), orderBy("order"));
     const unsub = onSnapshot(q, (snap) => {
       if (!snap.empty) {
-        setExperiences(snap.docs.map((d) => d.data() as ExperienceData));
+        setExperiences(snap.docs.map((d) => d.data() as unknown as ExperienceData));
       }
     }, () => {});
     return () => unsub();
@@ -91,12 +90,12 @@ export default function Experience() {
                   >
                     <FiCode size={20} style={{ color: exp.color }} />
                   </div>
-                  <h3 className="text-lg font-bold text-white">{exp.role}</h3>
-                  <span className="text-accent text-xs">{exp.company}</span>
+                  <h3 className="text-lg font-bold text-deep-teal">{exp.role}</h3>
+                  <span className="text-soft-peach text-xs">{exp.company}</span>
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                <p className="text-deep-teal/75 text-sm leading-relaxed mb-4">
                   {exp.description}
                 </p>
 
@@ -105,7 +104,7 @@ export default function Experience() {
                   {exp.skills.map((skill: string) => (
                     <span
                       key={skill}
-                      className="text-xs px-2 py-1 rounded bg-white/5 text-gray-500"
+                      className="text-xs px-2 py-1 rounded bg-white text-deep-teal/70"
                     >
                       {skill}
                     </span>

@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState, ReactNode } from "react";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
-import { auth } from "@/lib/firebase-auth";
+import { auth, onAuthStateChanged, signOut, User } from "@/lib/supabase-auth";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -54,8 +53,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-[#0f0f23] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-ice-white flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-soft-peach border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -63,18 +62,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[#0f0f23] text-white flex">
+    <div className="min-h-screen bg-ice-white text-deep-teal flex">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#12122b] border-r border-white/5 flex flex-col transition-transform duration-300 
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-deep-teal/10 flex flex-col transition-transform duration-300 
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
-        <div className="p-5 border-b border-white/5 flex items-center justify-between">
+        <div className="p-5 border-b border-deep-teal/10 flex items-center justify-between">
           <Link href="/admin/dashboard" className="text-xl font-bold">
-            AB<span className="text-cyan-400">.</span> Admin
+            AB<span className="text-soft-peach">.</span> Admin
           </Link>
           <button
-            className="lg:hidden text-gray-400"
+            className="lg:hidden text-deep-teal/75"
             onClick={() => setSidebarOpen(false)}
           >
             <FiX size={20} />
@@ -91,8 +90,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   active
-                    ? "bg-cyan-500/10 text-cyan-400"
-                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    ? "bg-soft-peach/10 text-soft-peach"
+                    : "text-deep-teal/75 hover:bg-white hover:text-deep-teal"
                 }`}
               >
                 <item.icon size={18} />
@@ -102,7 +101,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-white/5">
+        <div className="p-4 border-t border-deep-teal/10">
           <button
             onClick={() => signOut(auth)}
             className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"
@@ -116,17 +115,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       {/* Main content */}
       <div className="flex-1 lg:ml-64">
         {/* Top bar */}
-        <header className="sticky top-0 z-40 bg-[#0f0f23]/80 backdrop-blur-md border-b border-white/5 px-4 py-3 flex items-center justify-between">
+        <header className="sticky top-0 z-40 bg-ice-white/80 backdrop-blur-md border-b border-deep-teal/10 px-4 py-3 flex items-center justify-between">
           <button
-            className="lg:hidden text-gray-400"
+            className="lg:hidden text-deep-teal/75"
             onClick={() => setSidebarOpen(true)}
           >
             <FiMenu size={22} />
           </button>
 
           <div className="flex items-center gap-3 ml-auto">
-            <span className="text-sm text-gray-500">{user.email}</span>
-            <div className="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-xs font-bold text-cyan-400">
+            <span className="text-sm text-deep-teal/70">{user.email}</span>
+            <div className="w-8 h-8 rounded-full bg-soft-peach/20 border border-soft-peach/40 flex items-center justify-center text-xs font-bold text-soft-peach">
               A
             </div>
           </div>

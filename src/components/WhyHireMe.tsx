@@ -17,42 +17,42 @@ const reasons = [
     title: "Clean & Scalable Code",
     description:
       "I write well-structured, maintainable code following best practices and design patterns — no messy shortcuts.",
-    color: "#00f5ff",
+    color: "#F59E7B",
   },
   {
     icon: FiZap,
     title: "Fast Delivery",
     description:
       "I work with focus and efficiency, delivering high-quality results within tight deadlines without compromising standards.",
-    color: "#ff00ff",
+    color: "#F59E7B",
   },
   {
     icon: FiLayers,
     title: "Full Stack Versatility",
     description:
       "From frontend UI to backend APIs to desktop apps and games — I handle the entire stack so you need only one developer.",
-    color: "#7b2ff7",
+    color: "#0F3D47",
   },
   {
     icon: FiMessageCircle,
     title: "Clear Communication",
     description:
       "I keep you in the loop at every stage with regular updates, transparent timelines, and responsive availability.",
-    color: "#00d4ff",
+    color: "#0F3D47",
   },
   {
     icon: FiShield,
     title: "Reliable & Accountable",
     description:
       "I take ownership of every project. If something isn't right, I fix it — your satisfaction is my priority.",
-    color: "#f59e0b",
+    color: "#F59E7B",
   },
   {
     icon: FiClock,
     title: "Long-Term Partnership",
     description:
       "I don't just build and disappear. I offer ongoing support, maintenance, and feature updates after delivery.",
-    color: "#10b981",
+    color: "#0F3D47",
   },
 ];
 
@@ -90,15 +90,15 @@ export default function WhyHireMe() {
             </div>
 
             {/* Content */}
-            <h3 className="text-white text-lg font-bold mb-2">
+            <h3 className="text-deep-teal text-lg font-bold mb-2">
               {reason.title}
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-deep-teal/75 text-sm leading-relaxed">
               {reason.description}
             </p>
 
             {/* Number watermark */}
-            <span className="absolute top-4 right-5 text-5xl font-black text-white/[0.03] select-none">
+            <span className="absolute top-4 right-5 text-5xl font-black text-deep-teal/[0.03] select-none">
               {String(i + 1).padStart(2, "0")}
             </span>
 
@@ -118,7 +118,7 @@ export default function WhyHireMe() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <p className="text-gray-300 text-sm text-center sm:text-left">
+        <p className="text-deep-teal/85 text-sm text-center sm:text-left">
           Ready to bring your project to life? Let&rsquo;s discuss how I can help
           you achieve your goals.
         </p>

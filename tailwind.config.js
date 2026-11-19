@@ -6,14 +6,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#0f0f23",
-        secondary: "#1a1a3e",
-        accent: "#00f5ff",
-        "accent-pink": "#ff00ff",
-        "accent-purple": "#7b2ff7",
-        "accent-blue": "#00d4ff",
-        "glass-bg": "rgba(255, 255, 255, 0.05)",
-        "glass-border": "rgba(255, 255, 255, 0.1)",
+        "ice-white": "#F4F8FA",
+        "deep-teal": "#0F3D47",
+        "soft-peach": "#F59E7B",
+        primary: "#F4F8FA",
+        secondary: "#FFFFFF",
+        accent: "#F59E7B",
+        "accent-pink": "#F59E7B",
+        "accent-purple": "#0F3D47",
+        "accent-blue": "#F59E7B",
+        "glass-bg": "rgba(255, 255, 255, 0.85)",
+        "glass-border": "rgba(15, 61, 71, 0.1)",
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
@@ -28,8 +31,8 @@ module.exports = {
       },
       keyframes: {
         "glow-pulse": {
-          "0%": { textShadow: "0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff" },
-          "100%": { textShadow: "0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 80px #ff00ff" },
+          "0%": { textShadow: "0 0 10px #F59E7B" },
+          "100%": { textShadow: "0 0 20px #0F3D47" },
         },
         "float": {
           "0%, 100%": { transform: "translateY(0px)" },
@@ -46,7 +49,7 @@ module.exports = {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "neon-gradient": "linear-gradient(135deg, #00f5ff, #7b2ff7, #ff00ff)",
+        "neon-gradient": "linear-gradient(135deg, #0F3D47, #F59E7B)",
       },
     },
   },

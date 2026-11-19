@@ -8,12 +8,12 @@ export default function CallToAction() {
     <section className="relative py-24 overflow-hidden">
       {/* Background glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[600px] h-[300px] bg-accent/5 rounded-full blur-[120px]" />
+        <div className="w-[600px] h-[300px] bg-soft-peach/5 rounded-full blur-[120px]" />
       </div>
 
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
         <motion.h2
-          className="text-3xl md:text-5xl font-extrabold text-white mb-4"
+          className="text-3xl md:text-5xl font-extrabold text-deep-teal mb-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -22,7 +22,7 @@ export default function CallToAction() {
         </motion.h2>
 
         <motion.p
-          className="text-gray-400 max-w-lg mx-auto mb-10 text-lg"
+          className="text-deep-teal/75 max-w-lg mx-auto mb-10 text-lg"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

@@ -4,9 +4,8 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 import { FiArrowRight, FiDownload } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
-import { db } from "@/lib/firebase-db";
-import { doc, getDoc } from "firebase/firestore";
-import type { HeroData } from "@/lib/useFirestore";
+import { db, doc, getDoc } from "@/lib/supabase-db";
+import type { HeroData } from "@/lib/useContent";
 
 function AnimatedCounter({ target, label }: { target: number; label: string }) {
   const count = useMotionValue(0);
@@ -29,7 +28,7 @@ function AnimatedCounter({ target, label }: { target: number; label: string }) {
       <span ref={ref} className="text-3xl md:text-4xl font-bold neon-text">
         0
       </span>
-      <p className="text-xs md:text-sm text-gray-500 mt-1 uppercase tracking-wider">
+      <p className="text-xs md:text-sm text-deep-teal/70 mt-1 uppercase tracking-wider">
         {label}
       </p>
     </div>
@@ -75,7 +74,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 1.8 }}
         >
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-sm text-gray-400">
+          <span className="text-sm text-deep-teal/75">
             Available for freelance &amp; collaboration
           </span>
         </motion.div>
@@ -87,13 +86,13 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 2 }}
         >
-          <span className="text-white">Hi, I&apos;m </span>
+          <span className="text-deep-teal">Hi, I&apos;m </span>
           <span className="neon-text animate-glow-pulse">{hero.name}</span>
         </motion.h1>
 
         {/* Typing animation */}
         <motion.div
-          className="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-6 h-10"
+          className="text-xl md:text-2xl lg:text-3xl text-deep-teal/85 mb-6 h-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 2.3 }}
@@ -103,13 +102,13 @@ export default function Hero() {
             wrapper="span"
             speed={50}
             repeat={Infinity}
-            className="font-mono text-accent"
+            className="font-mono text-soft-peach"
           />
         </motion.div>
 
         {/* Description */}
         <motion.p
-          className="text-gray-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-deep-teal/75 text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 2.5 }}
@@ -140,7 +139,7 @@ export default function Hero() {
             href={hero.cvUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+            className="px-6 py-3 text-sm text-deep-teal/75 hover:text-deep-teal transition-colors flex items-center gap-2"
           >
             <FiDownload size={16} />
             Download CV
@@ -172,7 +171,7 @@ export default function Hero() {
           }}
         >
           <div className="w-6 h-10 rounded-full border-2 border-gray-600 flex items-start justify-center pt-2">
-            <div className="w-1 h-2 rounded-full bg-accent animate-bounce" />
+            <div className="w-1 h-2 rounded-full bg-soft-peach animate-bounce" />
           </div>
         </motion.div>
       </div>

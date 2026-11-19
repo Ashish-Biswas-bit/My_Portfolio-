@@ -31,19 +31,19 @@ export default function ImageUploader({ value, onChange, label = "Image" }: Prop
 
   return (
     <div>
-      <label className="block text-gray-400 text-sm mb-1">{label}</label>
+      <label className="block text-deep-teal/75 text-sm mb-1">{label}</label>
 
       {value ? (
         <div className="relative inline-block">
           <img
             src={value}
             alt="Uploaded"
-            className="w-32 h-32 object-cover rounded-lg border border-white/10"
+            className="w-32 h-32 object-cover rounded-lg border border-deep-teal/10"
           />
           <button
             type="button"
             onClick={() => onChange("")}
-            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white"
+            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-deep-teal"
           >
             <FiX size={12} />
           </button>
@@ -53,10 +53,10 @@ export default function ImageUploader({ value, onChange, label = "Image" }: Prop
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="w-32 h-32 border-2 border-dashed border-white/10 rounded-lg flex flex-col items-center justify-center text-gray-500 hover:border-cyan-500/40 hover:text-cyan-400 transition-colors disabled:opacity-50"
+          className="w-32 h-32 border-2 border-dashed border-deep-teal/10 rounded-lg flex flex-col items-center justify-center text-deep-teal/70 hover:border-soft-peach/40 hover:text-soft-peach transition-colors disabled:opacity-50"
         >
           {uploading ? (
-            <div className="w-6 h-6 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-soft-peach border-t-transparent rounded-full animate-spin" />
           ) : (
             <>
               <FiUpload size={20} />

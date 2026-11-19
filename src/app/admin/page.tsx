@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase-auth";
+import { auth, signInWithEmailAndPassword } from "@/lib/supabase-auth";
 import { useRouter } from "next/navigation";
 
 export default function AdminLogin() {
@@ -27,15 +26,15 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f23] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-ice-white flex items-center justify-center px-4">
       <form
         onSubmit={handleLogin}
-        className="w-full max-w-md bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-8"
+        className="w-full max-w-md bg-white border border-deep-teal/10 backdrop-blur-xl rounded-2xl p-8"
       >
-        <h1 className="text-2xl font-bold text-white text-center mb-1">
+        <h1 className="text-2xl font-bold text-deep-teal text-center mb-1">
           Admin Panel
         </h1>
-        <p className="text-gray-500 text-sm text-center mb-8">
+        <p className="text-deep-teal/70 text-sm text-center mb-8">
           Sign in to manage your portfolio
         </p>
 
@@ -45,22 +44,22 @@ export default function AdminLogin() {
           </div>
         )}
 
-        <label className="block mb-1 text-gray-400 text-sm">Email</label>
+        <label className="block mb-1 text-deep-teal/75 text-sm">Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-cyan-500 focus:outline-none transition"
+          className="w-full mb-4 px-4 py-3 rounded-lg bg-white border border-deep-teal/10 text-deep-teal placeholder-deep-teal/60 focus:border-soft-peach focus:outline-none transition"
           placeholder="admin@example.com"
           required
         />
 
-        <label className="block mb-1 text-gray-400 text-sm">Password</label>
+        <label className="block mb-1 text-deep-teal/75 text-sm">Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-6 px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-600 focus:border-cyan-500 focus:outline-none transition"
+          className="w-full mb-6 px-4 py-3 rounded-lg bg-white border border-deep-teal/10 text-deep-teal placeholder-deep-teal/60 focus:border-soft-peach focus:outline-none transition"
           placeholder="••••••••"
           required
         />
@@ -68,7 +67,7 @@ export default function AdminLogin() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold hover:opacity-90 transition disabled:opacity-50"
+          className="w-full py-3 rounded-lg bg-gradient-to-r bg-deep-teal text-ice-white hover:bg-soft-peach hover:text-deep-teal font-semibold hover:opacity-90 transition disabled:opacity-50"
         >
           {loading ? "Signing in..." : "Sign In"}
         </button>

@@ -6,8 +6,7 @@ import SectionWrapper from "./SectionWrapper";
 import { FiMail, FiSend, FiGithub, FiUser, FiMessageSquare } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiLinkedin } from "react-icons/fi";
-import { onSnapshot, doc } from "firebase/firestore";
-import { db } from "@/lib/firebase-db";
+import { db, doc, onSnapshot } from "@/lib/supabase-db";
 
 interface SiteSettings {
   email: string;
@@ -31,10 +30,10 @@ const Contact = () => {
       if (snap.exists()) {
         const s = snap.data() as SiteSettings;
         setContactInfo([
-          { icon: FiMail, label: "Email", value: s.email, href: `mailto:${s.email}`, color: "#00f5ff" },
-          { icon: FiGithub, label: "GitHub", value: s.github.replace("https://", ""), href: s.github, color: "#ffffff" },
-          { icon: FiLinkedin, label: "LinkedIn", value: s.linkedin.replace("https://", ""), href: s.linkedin, color: "#0077B5" },
-          { icon: FaWhatsapp, label: "WhatsApp", value: s.phone, href: `https://wa.me/${s.whatsapp.replace(/\D/g, "")}`, color: "#25D366" },
+          { icon: FiMail, label: "Email", value: s.email, href: `mailto:${s.email}`, color: "#F59E7B" },
+          { icon: FiGithub, label: "GitHub", value: s.github.replace("https://", ""), href: s.github, color: "#0F3D47" },
+          { icon: FiLinkedin, label: "LinkedIn", value: s.linkedin.replace("https://", ""), href: s.linkedin, color: "#F59E7B" },
+          { icon: FaWhatsapp, label: "WhatsApp", value: s.phone, href: `https://wa.me/${s.whatsapp.replace(/\D/g, "")}`, color: "#F59E7B" },
         ]);
       }
     });
@@ -67,10 +66,10 @@ const Contact = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-bold text-white mb-6">
+          <h3 className="text-2xl font-bold text-deep-teal mb-6">
             Let&apos;s talk about your project
             </h3>
-            <p className="text-gray-400 mb-8 leading-relaxed">
+            <p className="text-deep-teal/75 mb-8 leading-relaxed">
               I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out through any of the channels below.
             </p>
             <div className="space-y-4">
@@ -80,7 +79,7 @@ const Contact = () => {
                   href={info.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-white hover:text-accent transition-colors"
+                  className="flex items-center gap-3 text-deep-teal hover:text-soft-peach transition-colors"
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -88,7 +87,7 @@ const Contact = () => {
                 >
                   <info.icon className="text-xl" />
                   <span className="font-semibold">{info.label}:</span>
-                  <span className="text-gray-400">{info.value}</span>
+                  <span className="text-deep-teal/75">{info.value}</span>
                 </motion.a>
               ))}
             </div>
@@ -104,40 +103,40 @@ const Contact = () => {
           <form onSubmit={handleSubmit} className="glass-strong p-8 space-y-6">
             {/* Name */}
             <div className="relative">
-              <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-deep-teal/70" />
               <input
                 type="text"
                 placeholder="Your Name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accent transition-colors"
+                className="w-full pl-12 pr-4 py-4 bg-white border border-deep-teal/10 rounded-xl text-deep-teal placeholder-deep-teal/60 focus:outline-none focus:border-soft-peach transition-colors"
               />
             </div>
 
             {/* Email */}
             <div className="relative">
-              <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-deep-teal/70" />
               <input
                 type="email"
                 placeholder="Your Email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accent transition-colors"
+                className="w-full pl-12 pr-4 py-4 bg-white border border-deep-teal/10 rounded-xl text-deep-teal placeholder-deep-teal/60 focus:outline-none focus:border-soft-peach transition-colors"
               />
             </div>
 
             {/* Message */}
             <div className="relative">
-              <FiMessageSquare className="absolute left-4 top-4 text-gray-500" />
+              <FiMessageSquare className="absolute left-4 top-4 text-deep-teal/70" />
               <textarea
                 placeholder="Your Message"
                 rows={5}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 required
-                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-accent transition-colors resize-none"
+                className="w-full pl-12 pr-4 py-4 bg-white border border-deep-teal/10 rounded-xl text-deep-teal placeholder-deep-teal/60 focus:outline-none focus:border-soft-peach transition-colors resize-none"
               />
             </div>
 
@@ -153,7 +152,7 @@ const Contact = () => {
                 {status === "sending" ? (
                   <>
                     <motion.div
-                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                      className="w-5 h-5 border-2 border-deep-teal/30 border-t-deep-teal rounded-full"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     />

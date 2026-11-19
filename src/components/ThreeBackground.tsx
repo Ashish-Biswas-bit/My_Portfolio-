@@ -73,7 +73,7 @@ function Particles({ count = 200 }: { count?: number }) {
       </bufferGeometry>
       <pointsMaterial
         size={0.03}
-        color="#00f5ff"
+        color="#F59E7B"
         transparent
         opacity={0.6}
         sizeAttenuation
@@ -96,7 +96,7 @@ function GridLines() {
   return (
     <gridHelper
       ref={gridRef}
-      args={[40, 40, "#1a1a5e", "#1a1a3e"]}
+      args={[40, 40, "#D8E6E9", "#E5EEF0"]}
       position={[0, -5, 0]}
       rotation={[0, 0, 0]}
     />
@@ -113,36 +113,36 @@ export default function ThreeBackground() {
       >
         <ambientLight intensity={0.3} />
         <directionalLight position={[10, 10, 5]} intensity={0.5} />
-        <pointLight position={[-10, -10, -5]} intensity={0.3} color="#ff00ff" />
-        <pointLight position={[10, -5, 5]} intensity={0.3} color="#00f5ff" />
+        <pointLight position={[-10, -10, -5]} intensity={0.3} color="#F59E7B" />
+        <pointLight position={[10, -5, 5]} intensity={0.3} color="#0F3D47" />
 
         <FloatingShape
           position={[-4, 2, -3]}
-          color="#00f5ff"
+          color="#F59E7B"
           speed={1.5}
           size={1.2}
         />
         <FloatingShape
           position={[4, -1, -4]}
-          color="#7b2ff7"
+          color="#0F3D47"
           speed={1}
           size={0.8}
         />
         <FloatingShape
           position={[-2, -3, -2]}
-          color="#ff00ff"
+          color="#F59E7B"
           speed={2}
           size={0.6}
         />
         <FloatingShape
           position={[3, 3, -5]}
-          color="#00d4ff"
+          color="#0F3D47"
           speed={0.8}
           size={1}
         />
         <FloatingShape
           position={[0, 0, -6]}
-          color="#7b2ff7"
+          color="#0F3D47"
           speed={1.2}
           size={1.5}
         />

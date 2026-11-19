@@ -14,9 +14,8 @@ import {
   SiMysql,
 } from "react-icons/si";
 import { FaJava, FaGamepad, FaDesktop } from "react-icons/fa";
-import { db } from "@/lib/firebase-db";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import type { SkillData } from "@/lib/useFirestore";
+import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
+import type { SkillData } from "@/lib/useContent";
 import { IconType } from "react-icons";
 
 const iconMap: Record<string, IconType> = {
@@ -89,7 +88,7 @@ export default function Skills() {
               </motion.div>
 
               {/* Name */}
-              <h3 className="text-sm font-semibold text-white mb-3">
+              <h3 className="text-sm font-semibold text-deep-teal mb-3">
                 {skill.name}
               </h3>
 
@@ -108,7 +107,7 @@ export default function Skills() {
               </div>
 
               {/* Level text */}
-              <span className="text-xs text-gray-500 mt-2 block">
+              <span className="text-xs text-deep-teal/70 mt-2 block">
                 {skill.level}%
               </span>
 

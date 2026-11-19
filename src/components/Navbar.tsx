@@ -57,7 +57,7 @@ export default function Navbar() {
           className="text-2xl font-bold neon-text"
           whileHover={{ scale: 1.05 }}
         >
-          AB<span className="text-accent">.</span>
+          AB<span className="text-soft-peach">.</span>
         </motion.a>
 
         {/* Desktop Links */}
@@ -68,8 +68,8 @@ export default function Navbar() {
               href={link.href}
               className={`relative text-sm font-medium transition-colors duration-300 ${
                 activeSection === link.href.slice(1)
-                  ? "text-accent"
-                  : "text-gray-400 hover:text-white"
+                  ? "text-soft-peach"
+                  : "text-deep-teal/75 hover:text-deep-teal"
               }`}
             >
               {link.name}
@@ -78,7 +78,7 @@ export default function Navbar() {
                   className="absolute -bottom-1 left-0 right-0 h-[2px]"
                   style={{
                     background:
-                      "linear-gradient(90deg, #00f5ff, #7b2ff7)",
+                      "linear-gradient(90deg, #0F3D47, #F59E7B)",
                   }}
                   layoutId="activeSection"
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -97,7 +97,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden text-2xl text-accent z-50"
+          className="md:hidden text-2xl text-soft-peach z-50"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <HiX /> : <HiMenuAlt3 />}
@@ -118,7 +118,7 @@ export default function Navbar() {
               <motion.a
                 key={link.name}
                 href={link.href}
-                className="text-2xl font-medium text-gray-300 hover:text-accent transition-colors"
+                className="text-2xl font-medium text-deep-teal/85 hover:text-soft-peach transition-colors"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebase-db";
-import { collection, getCountFromServer } from "firebase/firestore";
+import { db, collection, getCountFromServer } from "@/lib/supabase-db";
 
 const sections = ["projects", "skills", "services", "experience", "testimonials", "education"];
 

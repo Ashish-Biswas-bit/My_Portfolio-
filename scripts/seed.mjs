@@ -1,28 +1,18 @@
 /**
- * Seed script — pushes all static portfolio data into Firebase Firestore.
- * Run with:  node scripts/seed.mjs
+ * Seed script — pushes sample portfolio data into Supabase.
+ * Run with: node --env-file=.env.local scripts/seed.mjs
  */
 
-import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  setDoc,
-  doc,
-  collection,
-  addDoc,
-} from "firebase/firestore";
+import { createClient } from "@supabase/supabase-js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCKOiNMY1oMX02nFjvEKpZA3_FUt5RKFrM",
-  authDomain: "portfolio-7a849.firebaseapp.com",
-  projectId: "portfolio-7a849",
-  storageBucket: "portfolio-7a849.firebasestorage.app",
-  messagingSenderId: "1081590432745",
-  appId: "1:1081590432745:web:ef2674170e9784aa238178",
-};
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error("Missing Supabase environment variables");
+}
+
+const db = createClient(supabaseUrl, supabaseAnonKey);
 
 /* ─── Site Content (single documents) ─── */
 
@@ -154,8 +144,8 @@ const skills = [
   { name: "Java", iconName: "FaJava", color: "#ED8B00", level: 80, category: "Backend", order: 6 },
   { name: "MongoDB", iconName: "SiMongodb", color: "#47A248", level: 82, category: "Database", order: 7 },
   { name: "PostgreSQL", iconName: "SiPostgresql", color: "#4169E1", level: 78, category: "Database", order: 8 },
-  { name: "Game Dev", iconName: "FaGamepad", color: "#ff00ff", level: 75, category: "Specialty", order: 9 },
-  { name: "Desktop Apps", iconName: "FaDesktop", color: "#00f5ff", level: 80, category: "Specialty", order: 10 },
+  { name: "Game Dev", iconName: "FaGamepad", color: "#F59E7B", level: 75, category: "Specialty", order: 9 },
+  { name: "Desktop Apps", iconName: "FaDesktop", color: "#F59E7B", level: 80, category: "Specialty", order: 10 },
 ];
 
 const services = [
@@ -172,7 +162,7 @@ const services = [
     title: "Desktop App Development",
     description: "Creating powerful cross-platform desktop applications with intuitive interfaces and robust functionality.",
     tags: ["Java", "Python", "GUI"],
-    gradient: "from-purple-500 to-pink-500",
+    gradient: "from-deep-teal to-soft-peach",
     order: 2,
   },
   {
@@ -180,7 +170,7 @@ const services = [
     title: "2D Game Development",
     description: "Designing and developing engaging 2D games with immersive gameplay mechanics and polished visuals.",
     tags: ["Pygame", "Game Design", "2D Graphics"],
-    gradient: "from-pink-500 to-red-500",
+    gradient: "from-soft-peach to-deep-teal",
     order: 3,
   },
   {
@@ -208,7 +198,7 @@ const experiences = [
     period: "2024 - Present",
     description: "Building modern web applications with Next.js, React, and Tailwind CSS. Developing e-commerce platforms and dynamic web solutions.",
     skills: ["Next.js", "React", "Tailwind CSS", "MongoDB"],
-    color: "#00f5ff",
+    color: "#F59E7B",
     order: 1,
   },
   {
@@ -217,7 +207,7 @@ const experiences = [
     period: "2023 - 2024",
     description: "Created desktop applications using Java and Python. Developed management systems for real-world use cases.",
     skills: ["Java", "Python", "Swing", "Tkinter"],
-    color: "#7b2ff7",
+    color: "#0F3D47",
     order: 2,
   },
   {
@@ -226,7 +216,7 @@ const experiences = [
     period: "2023",
     description: "Developed 2D games using Pygame with engaging gameplay mechanics, scoring systems, and polished visual design.",
     skills: ["Python", "Pygame", "Game Design", "OOP"],
-    color: "#ff00ff",
+    color: "#F59E7B",
     order: 3,
   },
   {
@@ -235,7 +225,7 @@ const experiences = [
     period: "2022 - 2023",
     description: "Started the programming journey by learning foundational languages and building small projects to strengthen core concepts.",
     skills: ["HTML", "CSS", "JavaScript", "Python"],
-    color: "#00d4ff",
+    color: "#0F3D47",
     order: 4,
   },
 ];
@@ -248,7 +238,7 @@ const testimonials = [
     rating: 5,
     avatar: "SM",
     avatarUrl: "",
-    color: "#00f5ff",
+    color: "#F59E7B",
     order: 1,
   },
   {
@@ -258,7 +248,7 @@ const testimonials = [
     rating: 5,
     avatar: "RH",
     avatarUrl: "",
-    color: "#7b2ff7",
+    color: "#0F3D47",
     order: 2,
   },
   {
@@ -268,7 +258,7 @@ const testimonials = [
     rating: 5,
     avatar: "DC",
     avatarUrl: "",
-    color: "#ff00ff",
+    color: "#F59E7B",
     order: 3,
   },
   {
@@ -278,7 +268,7 @@ const testimonials = [
     rating: 5,
     avatar: "NA",
     avatarUrl: "",
-    color: "#00d4ff",
+    color: "#0F3D47",
     order: 4,
   },
 ];
@@ -289,7 +279,7 @@ const educationItems = [
     institution: "University of Chittagong",
     year: "2021 – 2025",
     description: "Focused on software engineering, algorithms, data structures, and web development. Actively participated in coding competitions and hackathons.",
-    color: "#00f5ff",
+    color: "#F59E7B",
     order: 1,
   },
   {
@@ -297,38 +287,55 @@ const educationItems = [
     institution: "Govt. College, Chittagong",
     year: "2019 – 2021",
     description: "Science group with a strong foundation in mathematics and physics. Developed early interest in programming and logic.",
-    color: "#7b2ff7",
+    color: "#0F3D47",
     order: 2,
   },
 ];
 
 const certifications = [
-  { title: "Full Stack Web Development", issuer: "Udemy", year: "2023", color: "#ff00ff", order: 1 },
-  { title: "Python for Data Science", issuer: "Coursera", year: "2023", color: "#00f5ff", order: 2 },
-  { title: "Java Programming Masterclass", issuer: "Udemy", year: "2022", color: "#7b2ff7", order: 3 },
-  { title: "React – The Complete Guide", issuer: "Udemy", year: "2023", color: "#00d4ff", order: 4 },
+  { title: "Full Stack Web Development", issuer: "Udemy", year: "2023", color: "#F59E7B", order: 1 },
+  { title: "Python for Data Science", issuer: "Coursera", year: "2023", color: "#F59E7B", order: 2 },
+  { title: "Java Programming Masterclass", issuer: "Udemy", year: "2022", color: "#0F3D47", order: 3 },
+  { title: "React – The Complete Guide", issuer: "Udemy", year: "2023", color: "#0F3D47", order: 4 },
 ];
 
 /* ─── Seed function ─── */
 
 async function seed() {
-  console.log("🌱 Seeding Firebase Firestore...\n");
+  console.log("🌱 Seeding Supabase...\n");
 
   // Single documents
   console.log("  → siteContent/hero");
-  await setDoc(doc(db, "siteContent", "hero"), heroData);
+  await saveDocument("siteContent", "hero", heroData);
 
   console.log("  → siteContent/about");
-  await setDoc(doc(db, "siteContent", "about"), aboutData);
+  await saveDocument("siteContent", "about", aboutData);
 
   console.log("  → siteContent/settings");
-  await setDoc(doc(db, "siteContent", "settings"), settingsData);
+  await saveDocument("siteContent", "settings", settingsData);
 
   // Collection helpers
+  async function saveDocument(collectionName, documentId, data) {
+    const { error } = await db.from("portfolio_content").upsert(
+      { collection_name: collectionName, document_id: documentId, data },
+      { onConflict: "collection_name,document_id" }
+    );
+    if (error) throw error;
+  }
+
   async function seedCollection(name, items) {
     for (const item of items) {
-      const ref = await addDoc(collection(db, name), item);
-      console.log(`  → ${name}/${ref.id}`);
+      const { data, error } = await db
+        .from("portfolio_content")
+        .insert({
+          collection_name: name,
+          document_id: crypto.randomUUID(),
+          data: item,
+        })
+        .select("document_id")
+        .single();
+      if (error) throw error;
+      console.log(`  → ${name}/${data.document_id}`);
     }
   }
 
@@ -340,7 +347,7 @@ async function seed() {
   await seedCollection("education", educationItems);
   await seedCollection("certifications", certifications);
 
-  console.log("\n✅ Seeding complete! All sample data is now in Firestore.");
+  console.log("\n✅ Seeding complete! All sample data is now in Supabase.");
 }
 
 seed().catch((err) => {

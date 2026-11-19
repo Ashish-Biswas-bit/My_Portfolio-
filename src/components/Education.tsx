@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 import { FiBookOpen, FiAward, FiCalendar } from "react-icons/fi";
-import { db } from "@/lib/firebase-db";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import type { EducationData, CertificationData } from "@/lib/useFirestore";
+import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
+import type { EducationData, CertificationData } from "@/lib/useContent";
 
 // ...existing code...
 
@@ -18,13 +17,13 @@ export default function Education() {
     const q1 = query(collection(db, "education"), orderBy("order"));
     const unsub1 = onSnapshot(q1, (snap) => {
       if (!snap.empty) {
-        setEducation(snap.docs.map((d) => d.data() as EducationData));
+        setEducation(snap.docs.map((d) => d.data() as unknown as EducationData));
       }
     });
     const q2 = query(collection(db, "certifications"), orderBy("order"));
     const unsub2 = onSnapshot(q2, (snap) => {
       if (!snap.empty) {
-        setCertifications(snap.docs.map((d) => d.data() as CertificationData));
+        setCertifications(snap.docs.map((d) => d.data() as unknown as CertificationData));
       }
     });
     return () => { unsub1(); unsub2(); };
@@ -53,19 +52,19 @@ export default function Education() {
           >
             <div
               className="w-12 h-12 rounded-lg flex items-center justify-center text-xl mb-4"
-              style={{ background: `#00f5ff15`, color: "#00f5ff" }}
+              style={{ background: `#F59E7B15`, color: "#F59E7B" }}
             >
               <FiBookOpen />
             </div>
 
-            <div className="flex items-center gap-2 text-gray-500 text-xs mb-2">
+            <div className="flex items-center gap-2 text-deep-teal/70 text-xs mb-2">
               <FiCalendar size={12} />
               {edu.year}
             </div>
 
-            <h3 className="text-white text-lg font-bold mb-1">{edu.degree}</h3>
-            <p className="text-accent text-sm mb-3">{edu.institution}</p>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <h3 className="text-deep-teal text-lg font-bold mb-1">{edu.degree}</h3>
+            <p className="text-soft-peach text-sm mb-3">{edu.institution}</p>
+            <p className="text-deep-teal/75 text-sm leading-relaxed">
               {edu.description}
             </p>
 
@@ -80,15 +79,15 @@ export default function Education() {
       </div>
 
       {/* Certifications */}
-      <h3 className="text-white text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-        <FiAward className="text-accent" /> Certifications
+      <h3 className="text-deep-teal text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
+        <FiAward className="text-soft-peach" /> Certifications
       </h3>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {certifications.map((cert, i) => (
           <motion.div
             key={cert.title}
-            className="glass p-5 text-center group hover:border-white/10 transition-colors"
+            className="glass p-5 text-center group hover:border-deep-teal/10 transition-colors"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -100,10 +99,10 @@ export default function Education() {
               className="mx-auto mb-3 transition-colors"
               style={{ color: cert.color }}
             />
-            <h4 className="text-white text-sm font-semibold mb-1">
+            <h4 className="text-deep-teal text-sm font-semibold mb-1">
               {cert.title}
             </h4>
-            <p className="text-gray-500 text-xs">
+            <p className="text-deep-teal/70 text-xs">
               {cert.issuer} &middot; {cert.year}
             </p>
           </motion.div>

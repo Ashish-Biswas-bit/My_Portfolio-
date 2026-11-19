@@ -44,7 +44,7 @@ export default function LoadingScreen() {
 
             {/* Name */}
             <motion.h2
-              className="text-2xl font-light tracking-[0.3em] text-gray-300"
+              className="text-2xl font-light tracking-[0.3em] text-deep-teal/85"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -58,7 +58,7 @@ export default function LoadingScreen() {
                 className="h-full rounded-full"
                 style={{
                   background:
-                    "linear-gradient(90deg, #00f5ff, #7b2ff7, #ff00ff)",
+                    "linear-gradient(90deg, #0F3D47, #F59E7B)",
                   width: `${progress}%`,
                 }}
                 transition={{ duration: 0.1 }}
@@ -67,7 +67,7 @@ export default function LoadingScreen() {
 
             {/* Progress text */}
             <motion.span
-              className="text-xs tracking-[0.5em] text-gray-500 font-mono"
+              className="text-xs tracking-[0.5em] text-deep-teal/70 font-mono"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}

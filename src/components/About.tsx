@@ -16,22 +16,21 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 import { FaJava } from "react-icons/fa";
-import { db } from "@/lib/firebase-db";
-import { doc, onSnapshot } from "firebase/firestore";
-import type { AboutData } from "@/lib/useFirestore";
+import { db, doc, onSnapshot } from "@/lib/supabase-db";
+import type { AboutData } from "@/lib/useContent";
 
 const techStack = [
-  { icon: SiNextdotjs, name: "Next.js", color: "#ffffff" },
-  { icon: SiReact, name: "React", color: "#61DAFB" },
-  { icon: SiTailwindcss, name: "Tailwind", color: "#06B6D4" },
-  { icon: SiJavascript, name: "JavaScript", color: "#F7DF1E" },
-  { icon: SiTypescript, name: "TypeScript", color: "#3178C6" },
-  { icon: SiPython, name: "Python", color: "#3776AB" },
-  { icon: FaJava, name: "Java", color: "#ED8B00" },
-  { icon: SiNodedotjs, name: "Node.js", color: "#339933" },
-  { icon: SiMongodb, name: "MongoDB", color: "#47A248" },
-  { icon: SiPostgresql, name: "PostgreSQL", color: "#4169E1" },
-  { icon: SiGit, name: "Git", color: "#F05032" },
+  { icon: SiNextdotjs, name: "Next.js", color: "#0F3D47" },
+  { icon: SiReact, name: "React", color: "#0F3D47" },
+  { icon: SiTailwindcss, name: "Tailwind", color: "#0F3D47" },
+  { icon: SiJavascript, name: "JavaScript", color: "#0F3D47" },
+  { icon: SiTypescript, name: "TypeScript", color: "#0F3D47" },
+  { icon: SiPython, name: "Python", color: "#0F3D47" },
+  { icon: FaJava, name: "Java", color: "#0F3D47" },
+  { icon: SiNodedotjs, name: "Node.js", color: "#0F3D47" },
+  { icon: SiMongodb, name: "MongoDB", color: "#0F3D47" },
+  { icon: SiPostgresql, name: "PostgreSQL", color: "#0F3D47" },
+  { icon: SiGit, name: "Git", color: "#0F3D47" },
 ];
 
 export default function About() {
@@ -96,12 +95,12 @@ export default function About() {
           {/* Render bio from Firestore */}
           {Array.isArray(about?.bio)
             ? about.bio.map((paragraph: string, idx: number) => (
-                <p key={idx} className={idx === 0 ? "text-gray-300 text-lg leading-relaxed mb-4" : "text-gray-400 leading-relaxed mb-8"}>
+                <p key={idx} className={idx === 0 ? "text-deep-teal/85 text-lg leading-relaxed mb-4" : "text-deep-teal/75 leading-relaxed mb-8"}>
                   {paragraph}
                 </p>
               ))
             : about?.bio && (
-                <p className="text-gray-300 text-lg leading-relaxed mb-4">{about.bio}</p>
+                <p className="text-deep-teal/85 text-lg leading-relaxed mb-4">{about.bio}</p>
               )}
 
           {/* Stats */}
@@ -116,14 +115,14 @@ export default function About() {
                 transition={{ delay: i * 0.15 }}
               >
                 <div className="text-2xl font-bold neon-text">{stat.value}</div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
+                <div className="text-sm text-deep-teal/75">{stat.label}</div>
               </motion.div>
             ))}
           </div>
 
           {/* Tech stack icons */}
           <div>
-            <h3 className="text-sm uppercase tracking-wider text-gray-500 mb-4">
+            <h3 className="text-sm uppercase tracking-wider text-deep-teal/70 mb-4">
               Tech Stack
             </h3>
             <div className="flex flex-wrap gap-3">
@@ -143,7 +142,7 @@ export default function About() {
                     className="transition-transform duration-300 group-hover:drop-shadow-lg"
                   />
                   {/* Tooltip */}
-                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-xs bg-gray-900 text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-xs bg-deep-teal text-ice-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                     {tech.name}
                   </span>
                 </motion.div>

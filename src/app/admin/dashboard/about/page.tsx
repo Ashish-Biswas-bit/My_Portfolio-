@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase-db";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db, doc, getDoc, setDoc } from "@/lib/supabase-db";
 import ImageUploader from "@/components/admin/ImageUploader";
 import toast, { Toaster } from "react-hot-toast";
-import type { AboutData } from "@/lib/useFirestore";
+import type { AboutData } from "@/lib/useContent";
 
 const emptyAbout: AboutData = {
   bio: "",
@@ -40,7 +39,7 @@ export default function AboutAdmin() {
       <Toaster position="top-right" />
       <h1 className="text-2xl font-bold mb-6">About Section</h1>
 
-      <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-5 max-w-2xl">
+      <div className="bg-white border border-deep-teal/10 rounded-xl p-6 space-y-5 max-w-2xl">
         <ImageUploader
           label="Profile Photo"
           value={data?.avatarUrl || ""}
@@ -48,16 +47,16 @@ export default function AboutAdmin() {
         />
 
         <div>
-          <label className="block text-gray-400 text-sm mb-1">Bio</label>
+          <label className="block text-deep-teal/75 text-sm mb-1">Bio</label>
           <textarea
             rows={5}
             value={data?.bio || ""}
             onChange={(e) => setData((prev) => ({ ...(prev || emptyAbout), bio: e.target.value }))}
-            className="w-full px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 text-white focus:border-cyan-500 focus:outline-none resize-none"
+            className="w-full px-4 py-2.5 rounded-lg bg-white border border-deep-teal/10 text-deep-teal focus:border-soft-peach focus:outline-none resize-none"
           />
         </div>
 
-        <h3 className="text-white font-semibold pt-2">Stats</h3>
+        <h3 className="text-deep-teal font-semibold pt-2">Stats</h3>
         {(data?.stats || []).map((s, i) => (
           <div key={i} className="grid grid-cols-2 gap-3">
             <input
@@ -68,7 +67,7 @@ export default function AboutAdmin() {
                 setData((prev) => ({ ...(prev || emptyAbout), stats }));
               }}
               placeholder="Label"
-              className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:border-cyan-500 focus:outline-none"
+              className="px-3 py-2 rounded-lg bg-white border border-deep-teal/10 text-deep-teal text-sm focus:border-soft-peach focus:outline-none"
             />
             <input
               value={s.value}
@@ -78,7 +77,7 @@ export default function AboutAdmin() {
                 setData((prev) => ({ ...(prev || emptyAbout), stats }));
               }}
               placeholder="Value"
-              className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm focus:border-cyan-500 focus:outline-none"
+              className="px-3 py-2 rounded-lg bg-white border border-deep-teal/10 text-deep-teal text-sm focus:border-soft-peach focus:outline-none"
             />
           </div>
         ))}
@@ -86,7 +85,7 @@ export default function AboutAdmin() {
         <button
           onClick={save}
           disabled={saving}
-          className="px-8 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold hover:opacity-90 transition disabled:opacity-50"
+          className="px-8 py-2.5 rounded-lg bg-gradient-to-r bg-deep-teal text-ice-white hover:bg-soft-peach hover:text-deep-teal font-semibold hover:opacity-90 transition disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>

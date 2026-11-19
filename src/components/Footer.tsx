@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FiGithub, FiLinkedin, FiMail, FiHeart, FiArrowUp } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
-import { db } from "@/lib/firebase-db";
-import { doc, onSnapshot } from "firebase/firestore";
-import type { SiteSettings } from "@/lib/useFirestore";
+import { db, doc, onSnapshot } from "@/lib/supabase-db";
+import type { SiteSettings } from "@/lib/useContent";
 
 const staticSocialLinks = [
   { icon: FiGithub, href: "https://github.com/ashishbiswas", label: "GitHub" },
@@ -49,7 +48,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="relative pt-16 pb-8 px-6 border-t border-white/5">
+    <footer className="relative bg-deep-teal text-ice-white pt-16 pb-8 px-6 border-t border-ice-white/20">
       <div className="max-w-7xl mx-auto">
         {/* Top grid */}
         <div className="grid md:grid-cols-3 gap-10 mb-12">
@@ -60,16 +59,16 @@ export default function Footer() {
               className="text-2xl font-bold neon-text inline-block mb-3"
               whileHover={{ scale: 1.05 }}
             >
-              AB<span className="text-accent">.</span>
+              AB<span className="text-soft-peach">.</span>
             </motion.a>
-            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+            <p className="text-ice-white/75 text-sm leading-relaxed max-w-xs">
               {footerText}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+            <h4 className="text-ice-white font-semibold mb-4 text-sm uppercase tracking-wider">
               Quick Links
             </h4>
             <ul className="space-y-2">
@@ -77,7 +76,7 @@ export default function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-gray-500 hover:text-accent text-sm transition-colors"
+                    className="text-ice-white/75 hover:text-soft-peach text-sm transition-colors"
                   >
                     {link.name}
                   </a>
@@ -88,7 +87,7 @@ export default function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">
+            <h4 className="text-ice-white font-semibold mb-4 text-sm uppercase tracking-wider">
               Connect
             </h4>
             <div className="flex items-center gap-3">
@@ -98,7 +97,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent transition-colors"
+                  className="w-10 h-10 rounded-full bg-ice-white/10 border border-ice-white/20 flex items-center justify-center text-ice-white/75 hover:text-soft-peach transition-colors"
                   whileHover={{ y: -3, scale: 1.1 }}
                   aria-label={social.label}
                 >
@@ -110,16 +109,16 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-600 text-xs flex items-center gap-1">
+        <div className="border-t border-ice-white/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-ice-white/60 text-xs flex items-center gap-1">
             &copy; {new Date().getFullYear()} Ashish Biswas. Made with
-            <FiHeart className="text-accent-pink" size={12} />
+            <FiHeart className="text-soft-peach" size={12} />
             and lots of coffee.
           </p>
 
           <motion.a
             href="#home"
-            className="w-9 h-9 rounded-full glass flex items-center justify-center text-gray-400 hover:text-accent transition-colors"
+            className="w-9 h-9 rounded-full bg-ice-white/10 border border-ice-white/20 flex items-center justify-center text-ice-white/75 hover:text-soft-peach transition-colors"
             whileHover={{ y: -3 }}
             aria-label="Back to top"
           >

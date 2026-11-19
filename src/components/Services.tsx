@@ -11,9 +11,8 @@ import {
   FiLayers,
 } from "react-icons/fi";
 import { FaGamepad } from "react-icons/fa";
-import { db } from "@/lib/firebase-db";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import type { ServiceData } from "@/lib/useFirestore";
+import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
+import type { ServiceData } from "@/lib/useContent";
 export default function Services() {
   const [services, setServices] = useState<ServiceData[]>([]);
 
@@ -60,16 +59,16 @@ export default function Services() {
                 className="w-14 h-14 rounded-xl glass flex items-center justify-center mb-6 neon-glow-hover"
                 whileHover={{ rotate: -10 }}
               >
-                <Icon className="text-2xl text-accent" />
+                <Icon className="text-2xl text-soft-peach" />
               </motion.div>
 
               {/* Title */}
-              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-accent transition-colors">
+              <h3 className="text-lg font-bold text-deep-teal mb-2 group-hover:text-soft-peach transition-colors">
                 {service.title}
               </h3>
 
               {/* Description */}
-              <p className="text-gray-400 text-sm mb-3">
+              <p className="text-deep-teal/75 text-sm mb-3">
                 {service.description}
               </p>
 
@@ -78,7 +77,7 @@ export default function Services() {
                 {service.tags.map((tag: string) => (
                   <span
                     key={tag}
-                    className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20"
+                    className="text-[10px] px-2 py-0.5 rounded-full bg-soft-peach/10 text-soft-peach border border-soft-peach/20"
                   >
                     {tag}
                   </span>

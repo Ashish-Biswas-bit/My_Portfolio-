@@ -20,6 +20,28 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Supabase setup
+
+1. Create a Supabase project and enable the Email provider under Authentication.
+2. Run [`scripts/supabase-schema.sql`](scripts/supabase-schema.sql) in the Supabase SQL Editor.
+3. Create an admin user under Authentication > Users.
+4. Add the project URL and publishable key to `.env.local`:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-publishable-key
+```
+
+5. Seed the sample content:
+
+```bash
+node --env-file=.env.local scripts/seed.mjs
+```
+
+Cloudinary remains responsible for image uploads. Set
+`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` and
+`NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` in `.env.local`.
+
 ## Tech Stack
 
 - **Next.js 14** — React framework

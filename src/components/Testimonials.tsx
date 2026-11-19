@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 import { FiStar } from "react-icons/fi";
-import { db } from "@/lib/firebase-db";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import type { TestimonialData } from "@/lib/useFirestore";
+import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
+import type { TestimonialData } from "@/lib/useContent";
 
 export default function Testimonials() {
   const [testimonials, setTestimonials] = useState<TestimonialData[]>([]);
@@ -42,7 +41,7 @@ export default function Testimonials() {
             whileHover={{ y: -5 }}
           >
             {/* Quote mark */}
-            <div className="absolute top-4 right-6 text-6xl font-serif text-white/5 select-none">
+            <div className="absolute top-4 right-6 text-6xl font-serif text-deep-teal/5 select-none">
               &ldquo;
             </div>
 
@@ -58,21 +57,21 @@ export default function Testimonials() {
             </div>
 
             {/* Text */}
-            <p className="text-gray-300 leading-relaxed mb-6 text-sm">
+            <p className="text-deep-teal/85 leading-relaxed mb-6 text-sm">
               &ldquo;{t.text}&rdquo;
             </p>
 
             {/* Author */}
             <div className="flex items-center gap-3">
               <div
-                className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-white"
+                className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-deep-teal"
                 style={{ background: `${t.color}30`, border: `1px solid ${t.color}50` }}
               >
                 {t.avatar}
               </div>
               <div>
-                <h4 className="text-white font-semibold text-sm">{t.name}</h4>
-                <p className="text-gray-500 text-xs">{t.role}</p>
+                <h4 className="text-deep-teal font-semibold text-sm">{t.name}</h4>
+                <p className="text-deep-teal/70 text-xs">{t.role}</p>
               </div>
             </div>
 

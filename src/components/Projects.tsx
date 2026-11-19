@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 import { FiGithub, FiExternalLink } from "react-icons/fi";
-import { db } from "@/lib/firebase-db";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import type { ProjectData } from "@/lib/useFirestore";
+import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
+import type { ProjectData } from "@/lib/useContent";
 
 // ...existing code...
 
@@ -47,8 +46,8 @@ export default function Projects() {
             key={cat}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
               activeCategory === cat
-                ? "bg-gradient-to-r from-accent to-accent-purple text-white shadow-lg shadow-accent/20"
-                : "glass text-gray-400 hover:text-white"
+                ? "bg-gradient-to-r from-accent to-accent-purple text-deep-teal shadow-lg shadow-accent/20"
+                : "glass text-deep-teal/75 hover:text-deep-teal"
             }`}
             onClick={() => setActiveCategory(cat)}
             whileHover={{ scale: 1.05 }}
@@ -90,7 +89,7 @@ export default function Projects() {
                   <div className="flex gap-3">
                     <a
                       href={project.github}
-                      className="w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:text-accent transition-colors"
+                      className="w-10 h-10 rounded-full glass flex items-center justify-center text-deep-teal hover:text-soft-peach transition-colors"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -98,7 +97,7 @@ export default function Projects() {
                     </a>
                     <a
                       href={project.live}
-                      className="w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:text-accent transition-colors"
+                      className="w-10 h-10 rounded-full glass flex items-center justify-center text-deep-teal hover:text-soft-peach transition-colors"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -107,17 +106,17 @@ export default function Projects() {
                   </div>
                 </div>
                 {/* Category badge */}
-                <span className="absolute top-3 right-3 text-xs px-3 py-1 rounded-full bg-accent/20 text-accent border border-accent/30">
+                <span className="absolute top-3 right-3 text-xs px-3 py-1 rounded-full bg-soft-peach/20 text-soft-peach border border-soft-peach/30">
                   {project.category}
                 </span>
               </div>
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-accent transition-colors">
+                <h3 className="text-lg font-bold text-deep-teal mb-2 group-hover:text-soft-peach transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-3">
+                <p className="text-deep-teal/75 text-sm leading-relaxed mb-3">
                   {project.description}
                 </p>
 
@@ -127,7 +126,7 @@ export default function Projects() {
                     {(project as any).highlights.map((h: string) => (
                       <span
                         key={h}
-                        className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20"
+                        className="text-[10px] px-2 py-0.5 rounded-full bg-soft-peach/10 text-soft-peach border border-soft-peach/20"
                       >
                         {h}
                       </span>
@@ -140,7 +139,7 @@ export default function Projects() {
                   {project.tech.map((t) => (
                     <span
                       key={t}
-                      className="text-xs px-2 py-1 rounded bg-white/5 text-gray-500 border border-white/10"
+                      className="text-xs px-2 py-1 rounded bg-white text-deep-teal/70 border border-deep-teal/10"
                     >
                       {t}
                     </span>
