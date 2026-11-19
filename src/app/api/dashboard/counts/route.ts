@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { db, collection, getCountFromServer } from "@/lib/supabase-db";
+import { assertSupabaseConfigured } from "@/lib/supabase";
 
 const sections = ["projects", "skills", "services", "experience", "testimonials", "education"];
 
 export async function GET() {
   try {
+    assertSupabaseConfigured();
     const counts: Record<string, number> = {};
 
     for (const col of sections) {

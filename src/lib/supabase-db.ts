@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { assertSupabaseConfigured, supabase } from "./supabase";
 
 type CollectionRef = { collectionName: string };
 type DocumentRef = { collectionName: string; documentId: string };
@@ -32,6 +32,7 @@ function toSnapshot(rows: Array<{ document_id: string; data: Record<string, unkn
 }
 
 async function read(ref: QueryRef | DocumentRef) {
+  assertSupabaseConfigured();
   let request = supabase
     .from("portfolio_content")
     .select("document_id,data")
@@ -86,6 +87,7 @@ export async function getDoc(ref: DocumentRef) {
 }
 
 export async function getCountFromServer(ref: CollectionRef) {
+  assertSupabaseConfigured();
   const { count, error } = await supabase
     .from("portfolio_content")
     .select("id", { count: "exact", head: true })
@@ -95,6 +97,7 @@ export async function getCountFromServer(ref: CollectionRef) {
 }
 
 export async function setDoc(ref: DocumentRef, data: object) {
+  assertSupabaseConfigured();
   const { error } = await supabase.from("portfolio_content").upsert(
     {
       collection_name: ref.collectionName,
@@ -110,6 +113,7 @@ export async function addDoc(
   ref: CollectionRef,
   data: object
 ) {
+  assertSupabaseConfigured();
   const documentId = crypto.randomUUID();
   const { error } = await supabase.from("portfolio_content").insert({
     collection_name: ref.collectionName,
@@ -133,6 +137,7 @@ export async function updateDoc(
 }
 
 export async function deleteDoc(ref: DocumentRef) {
+  assertSupabaseConfigured();
   const { error } = await supabase
     .from("portfolio_content")
     .delete()
@@ -146,6 +151,7 @@ export function onSnapshot(
   callback: (snapshot: Snapshot) => void,
   onError?: (error: Error) => void
 ) {
+  assertSupabaseConfigured();
   let active = true;
   const load = async () => {
     try {
