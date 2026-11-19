@@ -6,6 +6,7 @@ import { FiArrowRight, FiDownload } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
 import { db, doc, getDoc } from "@/lib/supabase-db";
 import type { HeroData } from "@/lib/useContent";
+import MagneticLink from "./MagneticLink";
 
 function AnimatedCounter({ target, label }: { target: number; label: string }) {
   const count = useMotionValue(0);
@@ -65,6 +66,37 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden"
     >
+      <motion.div
+        className="hidden xl:block absolute right-8 2xl:right-20 top-1/2 -translate-y-1/2 w-72 glass-strong p-4 text-left"
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, delay: 2.4 }}
+        aria-label="Developer code preview"
+      >
+        <div className="flex items-center gap-1.5 mb-4">
+          <span className="w-2.5 h-2.5 rounded-full bg-soft-peach" />
+          <span className="w-2.5 h-2.5 rounded-full bg-deep-teal/20" />
+          <span className="w-2.5 h-2.5 rounded-full bg-deep-teal/20" />
+          <span className="ml-auto text-[10px] text-deep-teal/50 font-mono">
+            portfolio.tsx
+          </span>
+        </div>
+        <pre className="text-[11px] leading-6 text-deep-teal/75 font-mono whitespace-pre-wrap">
+          <code>{`const developer = {
+  focus: "quality",
+  stack: ["Next.js", "Supabase"],
+  status: "available"
+};`}</code>
+        </pre>
+        <div className="mt-4 h-1.5 rounded-full bg-deep-teal/10 overflow-hidden">
+          <motion.div
+            className="h-full w-2/3 rounded-full bg-soft-peach"
+            animate={{ x: ["-100%", "150%"] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </div>
+      </motion.div>
+
       <div className="relative z-10 text-center max-w-5xl mx-auto">
         {/* Greeting badge */}
         <motion.div
@@ -123,12 +155,12 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 2.7 }}
         >
-          <a href="#contact" className="btn-primary group">
+          <MagneticLink href="#contact" className="btn-primary group">
             <span className="flex items-center gap-2">
               Hire Me
               <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
             </span>
-          </a>
+          </MagneticLink>
           <a href="#projects" className="btn-outline group">
             <span className="flex items-center gap-2">
               View Projects

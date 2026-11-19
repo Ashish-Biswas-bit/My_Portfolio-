@@ -58,7 +58,7 @@ export default function Skills() {
         Technologies and tools I use to bring ideas to life
       </p>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-6 auto-rows-fr">
         {skills.map((skill, i) => {
           // Auto-adjust icon based on language if present
           const Icon = skill.language && iconMap[skill.language]
@@ -67,7 +67,13 @@ export default function Skills() {
           return (
             <motion.div
               key={skill.name}
-              className="group glass p-6 text-center cursor-pointer neon-glow-hover transition-all duration-300"
+              className={`group glass p-6 text-center cursor-pointer neon-glow-hover hover:border-soft-peach transition-all duration-300 ${
+                i === 0
+                  ? "lg:col-span-4 lg:row-span-2"
+                  : i === 1
+                    ? "lg:col-span-4"
+                    : "lg:col-span-2"
+              }`}
               initial={{ opacity: 0, y: 30, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
@@ -93,7 +99,7 @@ export default function Skills() {
               </h3>
 
               {/* Progress bar */}
-              <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
+              <div className="w-full h-1.5 bg-deep-teal/10 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full rounded-full"
                   style={{

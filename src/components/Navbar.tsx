@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import MagneticLink from "./MagneticLink";
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -90,9 +91,9 @@ export default function Navbar() {
 
         {/* Hire Me button (desktop) */}
         <div className="hidden md:block">
-          <a href="#contact" className="btn-primary">
+          <MagneticLink href="#contact" className="btn-primary">
             <span>Hire Me</span>
-          </a>
+          </MagneticLink>
         </div>
 
         {/* Mobile hamburger */}

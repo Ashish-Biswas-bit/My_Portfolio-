@@ -5,6 +5,10 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 const missingSupabaseConfig = !supabaseUrl || !supabaseAnonKey;
 
+export function isSupabaseConfigured() {
+  return !missingSupabaseConfig;
+}
+
 export function assertSupabaseConfigured() {
   if (missingSupabaseConfig) {
     throw new Error(

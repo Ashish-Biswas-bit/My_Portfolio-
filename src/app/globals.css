@@ -30,7 +30,6 @@ body {
   color: var(--deep-teal);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
-  cursor: none;
 }
 
 /* Custom Scrollbar */
@@ -168,34 +167,40 @@ body {
   background: var(--primary);
 }
 
-/* Cursor styles */
-@media (pointer: fine) {
-  .custom-cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--soft-peach);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 99999;
-    transition: transform 0.15s ease, background 0.15s ease;
-    mix-blend-mode: difference;
-  }
+.ambient-background {
+  --glow-x: 50%;
+  --glow-y: 30%;
+  contain: paint;
+}
 
-  .custom-cursor.hover {
-    transform: scale(2);
-    background: rgba(245, 158, 123, 0.2);
-  }
+.ambient-grid {
+  opacity: 0.55;
+  background-image:
+    linear-gradient(rgba(15, 61, 71, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 61, 71, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+}
 
-  .cursor-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--soft-peach);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 99999;
-  }
+.ambient-glow {
+  background:
+    radial-gradient(
+      circle at var(--glow-x) var(--glow-y),
+      rgba(245, 158, 123, 0.2),
+      transparent 22rem
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(15, 61, 71, 0.08),
+      transparent 24rem
+    );
+  transition: background-position 180ms ease-out;
+}
+
+.magnetic-link {
+  will-change: transform;
+  transition: transform 180ms ease-out, color 180ms ease-out,
+    background-color 180ms ease-out;
 }
 
 @media (pointer: coarse) {

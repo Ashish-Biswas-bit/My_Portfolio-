@@ -1,5 +1,9 @@
 import type { User } from "@supabase/supabase-js";
-import { assertSupabaseConfigured, supabase } from "./supabase";
+import {
+  assertSupabaseConfigured,
+  isSupabaseConfigured,
+  supabase,
+} from "./supabase";
 
 export type { User };
 
@@ -8,6 +12,11 @@ export async function signInWithEmailAndPassword(
   email: string,
   password: string
 ) {
+  if (!isSupabaseConfigured()) {
+    throw new Error(
+      "Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY."
+    );
+  }
   assertSupabaseConfigured();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -21,6 +30,13 @@ export function onAuthStateChanged(
   _auth: typeof supabase,
   callback: (user: User | null) => void
 ) {
+  if (!isSupabaseConfigured()) {
+    console.error(
+      "Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY."
+    );
+    callback(null);
+    return () => undefined;
+  }
   assertSupabaseConfigured();
   supabase.auth.getUser().then(({ data }) => callback(data.user));
   const {

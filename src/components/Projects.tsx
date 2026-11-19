@@ -60,14 +60,20 @@ export default function Projects() {
 
       {/* Projects grid */}
       <motion.div
-        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid md:grid-cols-2 lg:grid-cols-12 gap-6 auto-rows-fr"
         layout
       >
         <AnimatePresence mode="popLayout">
           {filtered.map((project, i) => (
             <motion.div
               key={project.title}
-              className="group glass overflow-hidden cursor-pointer"
+              className={`group glass overflow-hidden cursor-pointer hover:border-soft-peach transition-colors ${
+                i === 0
+                  ? "lg:col-span-7"
+                  : i === 1
+                    ? "lg:col-span-5"
+                    : "lg:col-span-4"
+              }`}
               layout
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}

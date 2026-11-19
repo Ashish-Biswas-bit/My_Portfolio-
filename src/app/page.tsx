@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import LoadingScreen from "@/components/LoadingScreen";
-import CustomCursor from "@/components/CustomCursor";
 import ScrollProgress from "@/components/ScrollProgress";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -18,18 +17,16 @@ import CallToAction from "@/components/CallToAction";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
-const ThreeBackground = dynamic(
-  () => import("@/components/ThreeBackground"),
-  { ssr: false }
-);
+const AmbientBackground = dynamic(() => import("@/components/AmbientBackground"), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
     <>
       <LoadingScreen />
-      <CustomCursor />
       <ScrollProgress />
-      <ThreeBackground />
+      <AmbientBackground />
       <Navbar />
       <main className="relative z-10">
         <Hero />

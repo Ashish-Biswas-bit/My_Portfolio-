@@ -18,8 +18,12 @@ export default function AdminLogin() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/admin/dashboard");
-    } catch {
-      setError("Invalid email or password");
+    } catch (error) {
+      setError(
+        error instanceof Error && error.message.startsWith("Supabase is not configured")
+          ? "Supabase is not configured. Add the required environment variables."
+          : "Invalid email or password"
+      );
     } finally {
       setLoading(false);
     }

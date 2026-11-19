@@ -1,4 +1,8 @@
-import { assertSupabaseConfigured, supabase } from "./supabase";
+import {
+  assertSupabaseConfigured,
+  isSupabaseConfigured,
+  supabase,
+} from "./supabase";
 
 type CollectionRef = { collectionName: string };
 type DocumentRef = { collectionName: string; documentId: string };
@@ -151,18 +155,29 @@ export function onSnapshot(
   callback: (snapshot: Snapshot) => void,
   onError?: (error: Error) => void
 ) {
-  assertSupabaseConfigured();
   let active = true;
   const load = async () => {
     try {
+      assertSupabaseConfigured();
       const snapshot = await read(ref);
       if (active) callback(snapshot);
     } catch (error) {
-      if (active) onError?.(error as Error);
+      if (!active) return;
+      if (onError) {
+        onError(error as Error);
+      } else {
+        console.error("Unable to load Supabase content:", error);
+      }
     }
   };
 
   void load();
+  if (!isSupabaseConfigured()) {
+    return () => {
+      active = false;
+    };
+  }
+
   const channel = supabase
     .channel(`portfolio-${ref.collectionName}-${Math.random()}`)
     .on(

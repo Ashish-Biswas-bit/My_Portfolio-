@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
+import MagneticLink from "./MagneticLink";
 
 export default function CallToAction() {
   return (
@@ -39,13 +40,13 @@ export default function CallToAction() {
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          <a
+          <MagneticLink
             href="#contact"
             className="btn-primary px-10 py-4 text-lg inline-flex items-center justify-center gap-2 group"
           >
             Start a Conversation
             <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
-          </a>
+          </MagneticLink>
           <a
             href="https://github.com/ashishbiswas"
             target="_blank"
