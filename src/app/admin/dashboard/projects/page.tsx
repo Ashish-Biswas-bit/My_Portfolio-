@@ -68,8 +68,29 @@ export default function ProjectsAdmin() {
         toast.success("Project added!");
       }
       setOpen(false);
-    } catch {
-      toast.error("Failed to save");
+    } catch (error) {
+      console.error("Failed to save project:", error);
+      const errorCode =
+        typeof error === "object" && error !== null && "code" in error
+          ? error.code
+          : undefined;
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : typeof error === "object" &&
+              error !== null &&
+              "message" in error &&
+              typeof error.message === "string"
+            ? error.message
+            : "Unknown error.";
+
+      if (errorCode === "PGRST205" || errorCode === "42P01") {
+        toast.error(
+          "Supabase is missing public.portfolio_content. Run scripts/supabase-schema.sql in the Supabase SQL Editor."
+        );
+      } else {
+        toast.error(`Failed to save project: ${errorMessage}`);
+      }
     }
     setSaving(false);
   };
