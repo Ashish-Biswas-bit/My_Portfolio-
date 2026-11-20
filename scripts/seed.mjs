@@ -49,10 +49,10 @@ const aboutData = {
 };
 
 const settingsData = {
-  email: "ashish@example.com",
-  phone: "+880 1XXX-XXXXXX",
+  email: "ashish44502@gmail.com",
+  phone: "+880 1744-502112",
   whatsapp: "880",
-  github: "https://github.com/ashishbiswas",
+  github: "https://github.com/ashish_biswas_bit",
   linkedin: "https://linkedin.com/in/ashishbiswas",
   footerText:
     "Full Stack Developer crafting modern web applications, desktop software, and games with passion and precision.",
