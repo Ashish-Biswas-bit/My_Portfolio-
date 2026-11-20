@@ -1,120 +1,67 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
-import { FiCode, FiBookOpen, FiTrendingUp, FiAward } from "react-icons/fi";
-import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
-import type { ExperienceData } from "@/lib/useContent";
 
-// ...existing code...
+const milestones = [
+  {
+    label: "Full Stack Web",
+    title: "From interface to data layer",
+    description:
+      "Working across responsive web interfaces, application logic, backend services, and connected databases.",
+    stack: ["React", "Next.js", "Node.js", "MySQL", "Supabase"],
+  },
+  {
+    label: "Desktop Software",
+    title: "Useful tools for desktop workflows",
+    description:
+      "Building desktop application interfaces and utility software with Python and Tkinter.",
+    stack: ["Python", "Tkinter", "SQLite"],
+  },
+  {
+    label: "Academic Foundation",
+    title: "Computer Science & Engineering",
+    description:
+      "Pursuing a B.Sc. in Computer Science and Engineering at North Western University, Khulna.",
+    stack: [],
+  },
+];
 
 export default function Experience() {
-  const [experiences, setExperiences] = useState<ExperienceData[]>([]);
-
-  useEffect(() => {
-    const q = query(collection(db, "experience"), orderBy("order"));
-    const unsub = onSnapshot(q, (snap) => {
-      if (!snap.empty) {
-        setExperiences(snap.docs.map((d) => d.data() as unknown as ExperienceData));
-      }
-    }, () => {});
-    return () => unsub();
-  }, []);
-
   return (
-    <SectionWrapper id="experience">
-      <h2 className="section-title">
-        My <span className="neon-text">Journey</span>
-      </h2>
-      <p className="section-subtitle">
-        A timeline of my development journey and professional growth
-      </p>
-
-      <div className="relative max-w-3xl mx-auto">
-        {/* Center line */}
-        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-accent via-accent-purple to-accent-pink -translate-x-1/2 hidden md:block" />
-        {/* Mobile line */}
-        <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-accent via-accent-purple to-accent-pink md:hidden" />
-
-        {experiences.map((exp: ExperienceData, i: number) => (
-          <motion.div
-            key={exp.role + exp.period}
-            className={`relative flex items-start mb-12 last:mb-0 ${
-              i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-            }`}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
-          >
-            {/* Timeline dot */}
-            <motion.div
-              className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full z-10"
-              style={{
-                backgroundColor: exp.color,
-                boxShadow: `0 0 15px ${exp.color}80`,
-              }}
-              whileInView={{ scale: [0, 1.3, 1] }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 + 0.2 }}
-            />
-
-            {/* Content card */}
-            <div
-              className={`ml-14 md:ml-0 md:w-[calc(50%-30px)] ${
-                i % 2 === 0 ? "md:pr-0 md:mr-auto" : "md:pl-0 md:ml-auto"
-              }`}
-            >
-              <motion.div
-                className="glass p-6 neon-glow-hover"
-                whileHover={{ y: -5 }}
-              >
-                {/* Period */}
-                <span
-                  className="text-xs font-mono px-3 py-1 rounded-full mb-3 inline-block"
-                  style={{
-                    color: exp.color,
-                    background: `${exp.color}15`,
-                    border: `1px solid ${exp.color}30`,
-                  }}
-                >
-                  {exp.period}
-                </span>
-
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-3">
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center"
-                    style={{ background: `${exp.color}15` }}
-                  >
-                    <FiCode size={20} style={{ color: exp.color }} />
-                  </div>
-                  <h3 className="text-lg font-bold text-deep-teal">{exp.role}</h3>
-                  <span className="text-soft-peach text-xs">{exp.company}</span>
-                </div>
-
-                {/* Description */}
-                <p className="text-deep-teal/75 text-sm leading-relaxed mb-4">
-                  {exp.description}
-                </p>
-
-                {/* Skills */}
-                <div className="flex flex-wrap gap-2">
-                  {exp.skills.map((skill: string) => (
-                    <span
-                      key={skill}
-                      className="text-xs px-2 py-1 rounded bg-white text-deep-teal/70"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        ))}
+    <SectionWrapper id="experience" className="section-muted">
+      <div className="section-heading">
+        <p className="eyebrow">Work &amp; learning</p>
+        <h2 className="section-title">
+          My engineering <span className="accent-word">journey.</span>
+        </h2>
+        <p className="section-subtitle">
+          A view of the areas I build in and the academic foundation behind them.
+        </p>
       </div>
+
+      <ol className="timeline mx-auto max-w-3xl">
+        {milestones.map((milestone, index) => (
+          <li key={milestone.label} className="timeline-item">
+            <span className="timeline-node" aria-hidden="true" />
+            <article className="surface-card p-6 sm:p-7">
+              <span className="card-kicker">
+                0{index + 1} / {milestone.label}
+              </span>
+              <h3 className="mt-3 text-lg font-semibold text-deep-teal">
+                {milestone.title}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-deep-teal/65">
+                {milestone.description}
+              </p>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {milestone.stack.map((item) => (
+                  <li key={item} className="skill-tag">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </li>
+        ))}
+      </ol>
     </SectionWrapper>
   );
 }

@@ -1,136 +1,65 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
-import {
-  SiHtml5,
-  SiCss,
-  SiJavascript,
-  SiNextdotjs,
-  SiPython,
-  SiMongodb,
-  SiPostgresql,
-  SiMysql,
-} from "react-icons/si";
-import { FaJava, FaGamepad, FaDesktop } from "react-icons/fa";
-import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
-import type { SkillData } from "@/lib/useContent";
-import { IconType } from "react-icons";
 
-const iconMap: Record<string, IconType> = {
-  SiHtml5, SiCss, SiJavascript, SiNextdotjs, SiPython, SiMongodb, SiPostgresql, SiMysql,
-  FaJava, FaGamepad, FaDesktop,
-  JavaScript: SiJavascript,
-  Python: SiPython,
-  Java: FaJava,
-  HTML: SiHtml5,
-  CSS: SiCss,
-  NextJS: SiNextdotjs,
-  MongoDB: SiMongodb,
-  PostgreSQL: SiPostgresql,
-  MySQL: SiMysql,
-  Game: FaGamepad,
-  Desktop: FaDesktop,
-};
-
-
+const skillGroups = [
+  {
+    number: "01",
+    title: "Frontend Development",
+    skills: ["HTML", "CSS", "JavaScript", "React", "Next.js", "Tailwind CSS"],
+  },
+  {
+    number: "02",
+    title: "Backend & Databases",
+    skills: ["Node.js", "MySQL", "SQLite", "Supabase", "Firebase"],
+  },
+  {
+    number: "03",
+    title: "Desktop Software",
+    skills: ["Python", "Tkinter"],
+  },
+  {
+    number: "04",
+    title: "Tools & Version Control",
+    skills: ["GitHub", "VS Code"],
+  },
+];
 
 export default function Skills() {
-  const [skills, setSkills] = useState<SkillData[]>([]);
-
-  useEffect(() => {
-    const q = query(collection(db, "skills"), orderBy("order"));
-    const unsub = onSnapshot(q, (snap) => {
-      if (!snap.empty) {
-        setSkills(snap.docs.map((d) => ({ id: d.id, ...d.data() } as SkillData)));
-      }
-    });
-    return () => unsub();
-  }, []);
-
   return (
     <SectionWrapper id="skills">
-      <h2 className="section-title">
-        My <span className="neon-text">Skills</span>
-      </h2>
-      <p className="section-subtitle">
-        Technologies and tools I use to bring ideas to life
-      </p>
+      <div className="section-heading">
+        <p className="eyebrow">Core capabilities</p>
+        <h2 className="section-title">
+          The tools behind <span className="accent-word">the work.</span>
+        </h2>
+        <p className="section-subtitle">
+          A focused toolkit spanning modern web development and desktop
+          software.
+        </p>
+      </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-6 auto-rows-fr">
-        {skills.map((skill, i) => {
-          // Auto-adjust icon based on language if present
-          const Icon = skill.language && iconMap[skill.language]
-            ? iconMap[skill.language]
-            : iconMap[skill.iconName] || FaDesktop;
-          return (
-            <motion.div
-              key={skill.name}
-              className={`group glass p-6 text-center cursor-pointer neon-glow-hover hover:border-soft-peach transition-all duration-300 ${
-                i === 0
-                  ? "lg:col-span-4 lg:row-span-2"
-                  : i === 1
-                    ? "lg:col-span-4"
-                    : "lg:col-span-2"
-              }`}
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -10 }}
-            >
-              {/* Icon */}
-              <motion.div
-                className="mb-4 flex justify-center"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Icon
-                  size={40}
-                  style={{ color: skill.color }}
-                  className="drop-shadow-lg"
-                />
-              </motion.div>
-
-              {/* Name */}
-              <h3 className="text-sm font-semibold text-deep-teal mb-3">
-                {skill.name}
-              </h3>
-
-              {/* Progress bar */}
-              <div className="w-full h-1.5 bg-deep-teal/10 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full"
-                  style={{
-                    background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)`,
-                  }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.level}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, delay: i * 0.08 + 0.3 }}
-                />
+      <div className="grid gap-4 md:grid-cols-2">
+        {skillGroups.map((group) => (
+          <article key={group.number} className="surface-card p-6 sm:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <span className="card-kicker">Category {group.number}</span>
+                <h3 className="mt-3 text-lg font-semibold text-deep-teal">
+                  {group.title}
+                </h3>
               </div>
-
-              {/* Level text */}
-              <span className="text-xs text-deep-teal/70 mt-2 block">
-                {skill.level}%
+              <span className="font-mono text-sm text-soft-peach">
+                {group.number}
               </span>
-
-              {/* Category badge */}
-              <span
-                className="inline-block mt-2 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full"
-                style={{
-                  color: skill.color,
-                  background: `${skill.color}15`,
-                  border: `1px solid ${skill.color}30`,
-                }}
-              >
-                {skill.category}
-              </span>
-            </motion.div>
-          );
-        })}
+            </div>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {group.skills.map((skill) => (
+                <li key={skill} className="skill-tag">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
       </div>
     </SectionWrapper>
   );

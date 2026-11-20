@@ -1,161 +1,217 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { FiArrowUpRight, FiGithub } from "react-icons/fi";
 import SectionWrapper from "./SectionWrapper";
-import { FiGithub, FiExternalLink } from "react-icons/fi";
 import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
 import type { ProjectData } from "@/lib/useContent";
 
-// ...existing code...
+const categories = ["All", "Full Stack Web", "Desktop Software"] as const;
+type ProjectCategory = (typeof categories)[number];
 
-const categories = ["All", "Web", "Desktop", "Game"];
+const verifiedStack = new Set([
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "React",
+  "Next.js",
+  "Tailwind CSS",
+  "Node.js",
+  "MySQL",
+  "SQLite",
+  "Supabase",
+  "Firebase",
+  "Python",
+  "Tkinter",
+  "GitHub",
+  "VS Code",
+]);
+
+function getCategory(category: string): Exclude<ProjectCategory, "All"> | null {
+  const normalized = category.trim().toLowerCase();
+  if (normalized === "web" || normalized === "full stack web") {
+    return "Full Stack Web";
+  }
+  if (normalized === "desktop" || normalized === "desktop software") {
+    return "Desktop Software";
+  }
+  return null;
+}
+
+function isExternalUrl(value: string | undefined) {
+  return Boolean(value && /^https?:\/\//i.test(value));
+}
 
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState<ProjectCategory>("All");
   const [projects, setProjects] = useState<ProjectData[]>([]);
+  const [projectsError, setProjectsError] = useState(false);
 
   useEffect(() => {
-    const q = query(collection(db, "projects"), orderBy("order"));
-    const unsub = onSnapshot(q, (snap) => {
-      if (!snap.empty) {
-        setProjects(snap.docs.map((d) => ({ id: d.id, ...d.data() } as ProjectData)));
-      }
-    }, () => {});
-    return () => unsub();
+    const projectsQuery = query(collection(db, "projects"), orderBy("order"));
+    return onSnapshot(
+      projectsQuery,
+      (snapshot) => {
+        setProjectsError(false);
+        setProjects(
+          snapshot.docs.map(
+            (document) =>
+              ({ id: document.id, ...document.data() }) as ProjectData
+          )
+        );
+      },
+      () => setProjectsError(true)
+    );
   }, []);
 
-  const filtered =
-    activeCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
+  const visibleProjects = useMemo(
+    () =>
+      projects.filter((project) => {
+        const category = getCategory(project.category);
+        const hasRealLink =
+          isExternalUrl(project.github) || isExternalUrl(project.live);
+        return (
+          category !== null &&
+          hasRealLink &&
+          (activeCategory === "All" || category === activeCategory)
+        );
+      }),
+    [activeCategory, projects]
+  );
 
   return (
     <SectionWrapper id="projects">
-      <h2 className="section-title">
-        My <span className="neon-text">Projects</span>
-      </h2>
-      <p className="section-subtitle">
-        A showcase of my recent work across different domains
-      </p>
+      <div className="section-heading">
+        <p className="eyebrow">Selected work</p>
+        <h2 className="section-title">
+          Projects with a <span className="accent-word">purpose.</span>
+        </h2>
+        <p className="section-subtitle">
+          Web and desktop software projects, presented with the tools and links
+          available.
+        </p>
+      </div>
 
-      {/* Filter buttons */}
-      <div className="flex flex-wrap justify-center gap-3 mb-12">
-        {categories.map((cat) => (
-          <motion.button
-            key={cat}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              activeCategory === cat
-                ? "bg-gradient-to-r from-accent to-accent-purple text-deep-teal shadow-lg shadow-accent/20"
-                : "glass text-deep-teal/75 hover:text-deep-teal"
+      <div className="mb-8 flex flex-wrap justify-center gap-2" aria-label="Filter projects">
+        {categories.map((category) => (
+          <button
+            key={category}
+            type="button"
+            className={`filter-button ${
+              activeCategory === category ? "filter-button-active" : ""
             }`}
-            onClick={() => setActiveCategory(cat)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            onClick={() => setActiveCategory(category)}
+            aria-pressed={activeCategory === category}
           >
-            {cat}
-          </motion.button>
+            {category}
+          </button>
         ))}
       </div>
 
-      {/* Projects grid */}
-      <motion.div
-        className="grid md:grid-cols-2 lg:grid-cols-12 gap-6 auto-rows-fr"
-        layout
-      >
-        <AnimatePresence mode="popLayout">
-          {filtered.map((project, i) => (
-            <motion.div
-              key={project.title}
-              className={`group glass overflow-hidden cursor-pointer hover:border-soft-peach transition-colors ${
-                i === 0
-                  ? "lg:col-span-7"
-                  : i === 1
-                    ? "lg:col-span-5"
-                    : "lg:col-span-4"
-              }`}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              whileHover={{ y: -8 }}
-            >
-              {/* Image area */}
-              <div className="relative h-48 bg-gradient-to-br from-secondary to-primary flex items-center justify-center overflow-hidden">
-                {project.image && (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-                {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                  <div className="flex gap-3">
-                    <a
-                      href={project.github}
-                      className="w-10 h-10 rounded-full glass flex items-center justify-center text-deep-teal hover:text-soft-peach transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FiGithub size={18} />
-                    </a>
-                    <a
-                      href={project.live}
-                      className="w-10 h-10 rounded-full glass flex items-center justify-center text-deep-teal hover:text-soft-peach transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FiExternalLink size={18} />
-                    </a>
-                  </div>
-                </div>
-                {/* Category badge */}
-                <span className="absolute top-3 right-3 text-xs px-3 py-1 rounded-full bg-soft-peach/20 text-soft-peach border border-soft-peach/30">
-                  {project.category}
-                </span>
-              </div>
+      {projectsError ? (
+        <p
+          role="status"
+          className="surface-card mx-auto max-w-2xl px-6 py-8 text-center text-sm leading-6 text-deep-teal/65"
+        >
+          Project data could not load. Check the Supabase schema and project
+          settings.
+        </p>
+      ) : visibleProjects.length > 0 ? (
+        <div className="grid gap-5 md:grid-cols-2">
+          {visibleProjects.map((project) => {
+            const category = getCategory(project.category);
+            const projectTech = Array.isArray(project.tech)
+              ? project.tech.filter((technology) => verifiedStack.has(technology))
+              : [];
+            const hasImage = isExternalUrl(project.image);
+            const hasGithub = isExternalUrl(project.github);
+            const hasLive = isExternalUrl(project.live);
 
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-deep-teal mb-2 group-hover:text-soft-peach transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-deep-teal/75 text-sm leading-relaxed mb-3">
-                  {project.description}
-                </p>
-
-                {/* Highlights */}
-                {"highlights" in project && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {(project as any).highlights.map((h: string) => (
-                      <span
-                        key={h}
-                        className="text-[10px] px-2 py-0.5 rounded-full bg-soft-peach/10 text-soft-peach border border-soft-peach/20"
-                      >
-                        {h}
+            return (
+              <article
+                key={project.id ?? project.title}
+                  className="surface-card project-card group overflow-hidden"
+              >
+                <div className="project-visual">
+                  {hasImage ? (
+                    <img
+                      src={project.image}
+                      alt={`${project.title} project preview`}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    <div className="project-placeholder">
+                      <span className="font-mono text-5xl font-semibold tracking-tight text-deep-teal/10">
+                        {category === "Desktop Software" ? "DS" : "WEB"}
                       </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Tech stack */}
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="text-xs px-2 py-1 rounded bg-white text-deep-teal/70 border border-deep-teal/10"
-                    >
-                      {t}
-                    </span>
-                  ))}
+                    </div>
+                  )}
+                  {category && <span className="project-category">{category}</span>}
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </motion.div>
+
+                <div className="p-6 sm:p-7">
+                  <p className="card-kicker">Project overview</p>
+                  <h3 className="mt-2 text-xl font-semibold tracking-tight text-deep-teal">
+                    {project.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-deep-teal/65">
+                    {project.description}
+                  </p>
+
+                  {projectTech.length > 0 && (
+                    <ul className="mt-5 flex flex-wrap gap-2">
+                      {projectTech.map((technology) => (
+                        <li key={technology} className="project-tech">
+                          {technology}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 border-t border-deep-teal/10 pt-5">
+                    {hasLive && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-link"
+                      >
+                        Live Demo <FiArrowUpRight aria-hidden="true" />
+                      </a>
+                    )}
+                    {hasGithub && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-link"
+                      >
+                        <FiGithub aria-hidden="true" /> GitHub Source
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="surface-card mx-auto max-w-2xl px-6 py-12 text-center sm:px-10">
+          <p className="card-kicker">Case studies</p>
+          <h3 className="mt-3 text-xl font-semibold text-deep-teal">
+            Project write-ups are being prepared.
+          </h3>
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-deep-teal/65">
+            Only projects with a working demo or source link are shown here.
+            Get in touch to discuss my web and desktop software work.
+          </p>
+          <a href="#contact" className="button-secondary mt-6">
+            Discuss a project <FiArrowUpRight aria-hidden="true" />
+          </a>
+        </div>
+      )}
     </SectionWrapper>
   );
 }

@@ -1,112 +1,61 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
-import { FiBookOpen, FiAward, FiCalendar } from "react-icons/fi";
-import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
-import type { EducationData, CertificationData } from "@/lib/useContent";
+import { FiBookOpen, FiMapPin } from "react-icons/fi";
 
-// ...existing code...
+const educationDetails = [
+  { label: "Degree", value: "B.Sc." },
+  { label: "Field", value: "Computer Science and Engineering" },
+  { label: "Institution", value: "North Western University" },
+  { label: "Location", value: "Khulna" },
+];
 
 export default function Education() {
-  const [education, setEducation] = useState<EducationData[]>([]);
-  const [certifications, setCertifications] = useState<CertificationData[]>([]);
-
-  useEffect(() => {
-    const q1 = query(collection(db, "education"), orderBy("order"));
-    const unsub1 = onSnapshot(q1, (snap) => {
-      if (!snap.empty) {
-        setEducation(snap.docs.map((d) => d.data() as unknown as EducationData));
-      }
-    });
-    const q2 = query(collection(db, "certifications"), orderBy("order"));
-    const unsub2 = onSnapshot(q2, (snap) => {
-      if (!snap.empty) {
-        setCertifications(snap.docs.map((d) => d.data() as unknown as CertificationData));
-      }
-    });
-    return () => { unsub1(); unsub2(); };
-  }, []);
-
   return (
     <SectionWrapper id="education">
-      <h2 className="section-title">
-        Education &amp; <span className="neon-text">Certifications</span>
-      </h2>
-      <p className="section-subtitle">
-        My academic background and professional credentials
-      </p>
-
-      {/* Education Cards */}
-      <div className="grid md:grid-cols-2 gap-6 mb-14">
-        {education.map((edu, i) => (
-          <motion.div
-            key={edu.degree}
-            className="glass p-8 relative overflow-hidden group"
-            initial={{ opacity: 0, x: i === 0 ? -30 : 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
-            whileHover={{ y: -4 }}
-          >
-            <div
-              className="w-12 h-12 rounded-lg flex items-center justify-center text-xl mb-4"
-              style={{ background: `#F59E7B15`, color: "#F59E7B" }}
-            >
-              <FiBookOpen />
-            </div>
-
-            <div className="flex items-center gap-2 text-deep-teal/70 text-xs mb-2">
-              <FiCalendar size={12} />
-              {edu.year}
-            </div>
-
-            <h3 className="text-deep-teal text-lg font-bold mb-1">{edu.degree}</h3>
-            <p className="text-soft-peach text-sm mb-3">{edu.institution}</p>
-            <p className="text-deep-teal/75 text-sm leading-relaxed">
-              {edu.description}
-            </p>
-
-            <div
-              className="absolute -bottom-2 -right-2 w-28 h-28 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              style={{
-                background: `radial-gradient(circle, ${edu.color}08, transparent 70%)`,
-              }}
-            />
-          </motion.div>
-        ))}
+      <div className="section-heading">
+        <p className="eyebrow">Academic background</p>
+        <h2 className="section-title">
+          Education &amp; <span className="accent-word">foundation.</span>
+        </h2>
       </div>
 
-      {/* Certifications */}
-      <h3 className="text-deep-teal text-xl font-bold text-center mb-6 flex items-center justify-center gap-2">
-        <FiAward className="text-soft-peach" /> Certifications
-      </h3>
+      <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <article className="surface-card p-7 sm:p-9">
+          <span className="education-icon">
+            <FiBookOpen aria-hidden="true" size={23} />
+          </span>
+          <p className="mt-7 card-kicker">Undergraduate degree</p>
+          <h3 className="mt-3 max-w-xl text-2xl font-semibold leading-snug tracking-tight text-deep-teal sm:text-3xl">
+            B.Sc. in Computer Science and Engineering (CSE)
+          </h3>
+          <p className="mt-3 text-base font-medium text-deep-teal/75">
+            North Western University
+          </p>
+          <p className="mt-2 inline-flex items-center gap-2 text-sm text-deep-teal/55">
+            <FiMapPin aria-hidden="true" /> Khulna
+          </p>
+        </article>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {certifications.map((cert, i) => (
-          <motion.div
-            key={cert.title}
-            className="glass p-5 text-center group hover:border-deep-teal/10 transition-colors"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            whileHover={{ y: -3 }}
-          >
-            <FiAward
-              size={28}
-              className="mx-auto mb-3 transition-colors"
-              style={{ color: cert.color }}
-            />
-            <h4 className="text-deep-teal text-sm font-semibold mb-1">
-              {cert.title}
-            </h4>
-            <p className="text-deep-teal/70 text-xs">
-              {cert.issuer} &middot; {cert.year}
-            </p>
-          </motion.div>
-        ))}
+        <div className="surface-card divide-y divide-deep-teal/10 p-6 sm:p-8">
+          <div className="pb-4">
+            <p className="card-kicker">Verified details</p>
+            <h3 className="mt-2 text-lg font-semibold text-deep-teal">
+              Academic record
+            </h3>
+          </div>
+          {educationDetails.map((detail) => (
+            <div
+              key={detail.label}
+              className="flex flex-col gap-1 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+            >
+              <span className="text-xs font-medium uppercase tracking-wide text-deep-teal/50">
+                {detail.label}
+              </span>
+              <span className="text-sm font-medium text-deep-teal sm:text-right">
+                {detail.value}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </SectionWrapper>
   );

@@ -1,178 +1,192 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
-import { motion } from "framer-motion";
+import { useState, type FormEvent } from "react";
+import {
+  FiArrowUpRight,
+  FiGithub,
+  FiLinkedin,
+  FiMail,
+  FiSend,
+} from "react-icons/fi";
 import SectionWrapper from "./SectionWrapper";
-import { FiMail, FiSend, FiGithub, FiUser, FiMessageSquare } from "react-icons/fi";
-import { FaWhatsapp } from "react-icons/fa";
-import { FiLinkedin } from "react-icons/fi";
-import { db, doc, onSnapshot } from "@/lib/supabase-db";
+import { useSiteSettings } from "@/lib/useSiteSettings";
 
-interface SiteSettings {
-  email: string;
-  github: string;
-  linkedin: string;
-  whatsapp: string;
-  phone: string;
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !email.endsWith("@example.com");
 }
 
-const Contact = () => {
-  const [contactInfo, setContactInfo] = useState<any[]>([]);
+function isExternalUrl(value: string) {
+  return /^https?:\/\//i.test(value);
+}
+
+export default function Contact() {
+  const { settings, error: settingsError } = useSiteSettings();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [draftOpened, setDraftOpened] = useState(false);
 
-  useEffect(() => {
-    const unsub = onSnapshot(doc(db, "siteContent", "settings"), (snap) => {
-      if (snap.exists()) {
-        const s = snap.data() as SiteSettings;
-        setContactInfo([
-          { icon: FiMail, label: "Email", value: s.email, href: `mailto:${s.email}`, color: "#F59E7B" },
-          { icon: FiGithub, label: "GitHub", value: s.github.replace("https://", ""), href: s.github, color: "#0F3D47" },
-          { icon: FiLinkedin, label: "LinkedIn", value: s.linkedin.replace("https://", ""), href: s.linkedin, color: "#F59E7B" },
-          { icon: FaWhatsapp, label: "WhatsApp", value: s.phone, href: `https://wa.me/${s.whatsapp.replace(/\D/g, "")}`, color: "#F59E7B" },
-        ]);
-      }
-    });
-    return () => unsub();
-  }, []);
+  const email = settings && isValidEmail(settings.email) ? settings.email : "";
+  const github =
+    settings && isExternalUrl(settings.github) ? settings.github : "";
+  const linkedin =
+    settings && isExternalUrl(settings.linkedin) ? settings.linkedin : "";
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setStatus("sent");
-    setFormData({ name: "", email: "", message: "" });
-    setTimeout(() => setStatus("idle"), 3000);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!email) return;
+
+    const subject = encodeURIComponent(`Portfolio inquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `From: ${formData.name} (${formData.email})\n\n${formData.message}`
+    );
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    setDraftOpened(true);
   };
 
   return (
-    <SectionWrapper id="contact">
-      <h2 className="section-title">
-        Get In <span className="neon-text">Touch</span>
-      </h2>
-      <p className="section-subtitle">
-        Have a project in mind? Let&apos;s work together to create something amazing
-      </p>
-      <div className="grid lg:grid-cols-2 gap-12">
-        {/* Contact info */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h3 className="text-2xl font-bold text-deep-teal mb-6">
-            Let&apos;s talk about your project
-            </h3>
-            <p className="text-deep-teal/75 mb-8 leading-relaxed">
-              I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out through any of the channels below.
-            </p>
-            <div className="space-y-4">
-              {contactInfo.map((info: any, i: number) => (
-                <motion.a
-                  key={info.label}
-                  href={info.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-deep-teal hover:text-soft-peach transition-colors"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <info.icon className="text-xl" />
-                  <span className="font-semibold">{info.label}:</span>
-                  <span className="text-deep-teal/75">{info.value}</span>
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
+    <SectionWrapper id="contact" className="section-muted">
+      <div className="section-heading">
+        <p className="eyebrow">Let&apos;s talk</p>
+        <h2 className="section-title">
+          Have something in <span className="text-soft-peach">mind?</span>
+        </h2>
+        <p className="section-subtitle">
+          Share a little about what you&apos;re building. I&apos;d be glad to hear
+          about it.
+        </p>
+      </div>
 
-        {/* Contact form */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <form onSubmit={handleSubmit} className="glass-strong p-8 space-y-6">
-            {/* Name */}
-            <div className="relative">
-              <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-deep-teal/70" />
+      <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
+        <aside className="surface-card flex flex-col p-6 sm:p-8">
+          <div>
+            <p className="card-kicker">Contact details</p>
+            <h3 className="mt-4 text-2xl font-semibold tracking-tight text-deep-teal">
+              Let&apos;s make something useful.
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-deep-teal/65">
+              Available to discuss full stack web applications and desktop
+              software projects.
+            </p>
+          </div>
+
+          <div className="my-7 flex items-center gap-3 rounded-xl border border-deep-teal/10 bg-ice-white p-4">
+            <span className="status-dot" />
+            <div>
+              <p className="text-sm font-semibold text-deep-teal">
+                Open to project conversations
+              </p>
+              <p className="mt-0.5 text-xs text-deep-teal/55">
+                Web and desktop software
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {email && (
+              <a className="contact-link" href={`mailto:${email}`}>
+                <FiMail aria-hidden="true" />
+                <span>{email}</span>
+                <FiArrowUpRight className="ml-auto" aria-hidden="true" />
+              </a>
+            )}
+            {github && (
+              <a
+                className="contact-link"
+                href={github}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FiGithub aria-hidden="true" />
+                <span>GitHub</span>
+                <FiArrowUpRight className="ml-auto" aria-hidden="true" />
+              </a>
+            )}
+            {linkedin && (
+              <a
+                className="contact-link"
+                href={linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FiLinkedin aria-hidden="true" />
+                <span>LinkedIn</span>
+                <FiArrowUpRight className="ml-auto" aria-hidden="true" />
+              </a>
+            )}
+            {!email && !github && !linkedin && (
+              <p className="text-sm leading-6 text-deep-teal/55">
+                Contact links will appear here once they are added in admin
+                settings.
+              </p>
+            )}
+          </div>
+        </aside>
+
+        <form onSubmit={handleSubmit} className="surface-card space-y-5 p-6 sm:p-8">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="form-field">
+              <span>Your name</span>
               <input
                 type="text"
-                placeholder="Your Name"
+                autoComplete="name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(event) =>
+                  setFormData({ ...formData, name: event.target.value })
+                }
+                placeholder="Name"
                 required
-                className="w-full pl-12 pr-4 py-4 bg-white border border-deep-teal/10 rounded-xl text-deep-teal placeholder-deep-teal/60 focus:outline-none focus:border-soft-peach transition-colors"
               />
-            </div>
-
-            {/* Email */}
-            <div className="relative">
-              <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-deep-teal/70" />
+            </label>
+            <label className="form-field">
+              <span>Your email</span>
               <input
                 type="email"
-                placeholder="Your Email"
+                autoComplete="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(event) =>
+                  setFormData({ ...formData, email: event.target.value })
+                }
+                placeholder="you@example.com"
                 required
-                className="w-full pl-12 pr-4 py-4 bg-white border border-deep-teal/10 rounded-xl text-deep-teal placeholder-deep-teal/60 focus:outline-none focus:border-soft-peach transition-colors"
               />
-            </div>
+            </label>
+          </div>
+          <label className="form-field">
+            <span>How can I help?</span>
+            <textarea
+              rows={6}
+              value={formData.message}
+              onChange={(event) =>
+                setFormData({ ...formData, message: event.target.value })
+              }
+              placeholder="Tell me a little about your project..."
+              required
+            />
+          </label>
 
-            {/* Message */}
-            <div className="relative">
-              <FiMessageSquare className="absolute left-4 top-4 text-deep-teal/70" />
-              <textarea
-                placeholder="Your Message"
-                rows={5}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-                className="w-full pl-12 pr-4 py-4 bg-white border border-deep-teal/10 rounded-xl text-deep-teal placeholder-deep-teal/60 focus:outline-none focus:border-soft-peach transition-colors resize-none"
-              />
-            </div>
-
-            {/* Submit button */}
-            <motion.button
+          <div className="flex flex-col items-start justify-between gap-4 border-t border-deep-teal/10 pt-5 sm:flex-row sm:items-center">
+            <p aria-live="polite" className="text-xs leading-5 text-deep-teal/55">
+              {draftOpened
+                ? "Your email app should open with a message draft. Please send it from there."
+                : email
+                  ? "This opens a pre-filled draft in your email app."
+                  : settingsError
+                    ? "Contact settings could not load. Check the Supabase schema and admin settings."
+                    : "Set a valid contact email in admin settings to enable the form."}
+            </p>
+            <button
               type="submit"
-              className="btn-primary w-full py-4"
-              disabled={status === "sending"}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="button-primary shrink-0"
+              disabled={!email}
             >
-              <span className="flex items-center justify-center gap-2">
-                {status === "sending" ? (
-                  <>
-                    <motion.div
-                      className="w-5 h-5 border-2 border-deep-teal/30 border-t-deep-teal rounded-full"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    />
-                    Sending...
-                  </>
-                ) : status === "sent" ? (
-                  "Message Sent! ✓"
-                ) : (
-                  <>
-                    Send Message
-                    <FiSend />
-                  </>
-                )}
-              </span>
-            </motion.button>
-          </form>
-        </motion.div>
+              Open Email App <FiSend aria-hidden="true" />
+            </button>
+          </div>
+        </form>
       </div>
     </SectionWrapper>
   );
-};
-
-export default Contact;
+}

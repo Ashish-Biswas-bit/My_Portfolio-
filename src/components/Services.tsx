@@ -1,91 +1,78 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 import {
-  FiGlobe,
-  FiMonitor,
-  FiCpu,
+  FiCode,
   FiDatabase,
-  FiLayers,
+  FiMonitor,
+  FiRefreshCw,
 } from "react-icons/fi";
-import { FaGamepad } from "react-icons/fa";
-import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
-import type { ServiceData } from "@/lib/useContent";
+
+const services = [
+  {
+    icon: FiCode,
+    title: "Full Stack Web Applications",
+    description:
+      "Responsive web products with cohesive frontend experiences and dependable backend integrations.",
+    stack: "Next.js · React · Node.js",
+  },
+  {
+    icon: FiMonitor,
+    title: "Desktop Software & GUI Tools",
+    description:
+      "Purpose-built desktop applications and interfaces for everyday workflows.",
+    stack: "Python · Tkinter",
+  },
+  {
+    icon: FiDatabase,
+    title: "Database & Backend Integration",
+    description:
+      "Structured data models and connected application services that fit the product.",
+    stack: "MySQL · SQLite · Supabase · Firebase",
+  },
+  {
+    icon: FiRefreshCw,
+    title: "Website Redesign & Optimization",
+    description:
+      "A clearer, more responsive user experience with a leaner frontend and polished details.",
+    stack: "React · Next.js · Tailwind CSS",
+  },
+];
+
 export default function Services() {
-  const [services, setServices] = useState<ServiceData[]>([]);
-
-  useEffect(() => {
-    const q = query(collection(db, "services"), orderBy("order"));
-    const unsub = onSnapshot(q, (snap) => {
-      if (!snap.empty) {
-        setServices(snap.docs.map((d) => ({ id: d.id, ...d.data() } as ServiceData)));
-      }
-    }, () => {});
-    return () => unsub();
-  }, []);
-
   return (
-    <SectionWrapper id="services">
-      <h2 className="section-title">
-        My <span className="neon-text">Services</span>
-      </h2>
-      <p className="section-subtitle">
-        Professional services I offer to bring your ideas to reality
-      </p>
+    <SectionWrapper id="services" className="section-muted">
+      <div className="section-heading">
+        <p className="eyebrow">How I can help</p>
+        <h2 className="section-title">
+          Software built around{" "}
+          <span className="accent-word">your needs.</span>
+        </h2>
+        <p className="section-subtitle">
+          Clear, stack-aligned services for useful digital products.
+        </p>
+      </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map((service, i) => {
-          const iconMap: Record<string, typeof FiGlobe> = { FiGlobe, FiMonitor, FiCpu, FiDatabase, FiLayers, FaGamepad };
-          const Icon = iconMap[service.iconName] || FiGlobe;
-          return (
-            <motion.div
-              key={service.title}
-              className="group relative glass p-8 overflow-hidden cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -8 }}
-            >
-              {/* Background gradient overlay on hover */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-              />
-
-              {/* Icon */}
-              <motion.div
-                className="w-14 h-14 rounded-xl glass flex items-center justify-center mb-6 neon-glow-hover"
-                whileHover={{ rotate: -10 }}
-              >
-                <Icon className="text-2xl text-soft-peach" />
-              </motion.div>
-
-              {/* Title */}
-              <h3 className="text-lg font-bold text-deep-teal mb-2 group-hover:text-soft-peach transition-colors">
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-deep-teal/75 text-sm mb-3">
-                {service.description}
-              </p>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {service.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] px-2 py-0.5 rounded-full bg-soft-peach/10 text-soft-peach border border-soft-peach/20"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          );
-        })}
+      <div className="grid gap-4 sm:grid-cols-2">
+        {services.map((service, index) => (
+          <article key={service.title} className="surface-card service-card p-6 sm:p-8">
+            <div className="flex items-start justify-between">
+              <span className="service-icon">
+                <service.icon aria-hidden="true" size={21} />
+              </span>
+              <span className="card-kicker">
+                0{index + 1} / SERVICE
+              </span>
+            </div>
+            <h3 className="mt-7 text-xl font-semibold tracking-tight text-deep-teal">
+              {service.title}
+            </h3>
+            <p className="mt-3 max-w-lg text-sm leading-6 text-deep-teal/65">
+              {service.description}
+            </p>
+            <p className="mt-6 border-t border-deep-teal/10 pt-4 font-mono text-xs leading-5 text-deep-teal/55">
+              {service.stack}
+            </p>
+          </article>
+        ))}
       </div>
     </SectionWrapper>
   );

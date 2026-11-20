@@ -1,6 +1,7 @@
-# Ashish Biswas — Futuristic 3D Portfolio
+# Ashish Biswas — Full Stack Web & Desktop Software Developer
 
-A modern, futuristic developer portfolio built with Next.js, Three.js, Framer Motion, and Tailwind CSS.
+A responsive portfolio built with Next.js, React, and Tailwind CSS, focused on
+full stack web development and Python desktop software.
 
 ## Getting Started
 
@@ -32,7 +33,8 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-publishable-key
 ```
 
-5. Seed the sample content:
+5. To seed verified profile defaults, add your Supabase service-role key to
+   `.env.local` as `SUPABASE_SERVICE_ROLE_KEY` and run:
 
 ```bash
 node --env-file=.env.local scripts/seed.mjs
@@ -42,24 +44,25 @@ Cloudinary remains responsible for image uploads. Set
 `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` and
 `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` in `.env.local`.
 
-## Tech Stack
+Add your public contact details in **Admin > Settings**. The contact form opens a
+pre-filled email draft in the visitor's email app; it does not send messages to
+a server.
 
-- **Next.js 14** — React framework
-- **Three.js** + React Three Fiber — 3D animations
-- **Framer Motion** — Page transitions and scroll animations
+Keep `SUPABASE_SERVICE_ROLE_KEY` private and never prefix it with
+`NEXT_PUBLIC_`; it bypasses row-level security.
+
+## Portfolio technology
+
+- **Next.js** — App Router framework
+- **React** — UI components
 - **Tailwind CSS** — Utility-first styling
 - **TypeScript** — Type safety
 
 ## Features
 
-- 3D animated background with floating shapes
-- Floating particles animation
-- Smooth page transitions
-- Scroll-based animations
-- Modern futuristic dark UI
-- Glassmorphism design
-- Custom cursor
-- Scroll progress bar
-- Project filtering
-- Responsive mobile design
-- Loading screen animation
+- Responsive sticky navigation
+- Lightweight architecture and stack overview
+- Skills and services grouped by verified technology
+- Project filters with working demo/source links
+- Accessible contact form that opens a pre-filled email draft
+- Reduced-motion support and keyboard-visible focus styles

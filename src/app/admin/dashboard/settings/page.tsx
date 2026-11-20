@@ -6,12 +6,12 @@ import toast, { Toaster } from "react-hot-toast";
 import type { SiteSettings } from "@/lib/useContent";
 
 const defaults: SiteSettings = {
-  email: "ashish@example.com",
+  email: "",
   phone: "",
   whatsapp: "",
-  github: "https://github.com/ashishbiswas",
-  linkedin: "https://linkedin.com/in/ashishbiswas",
-  footerText: "Full Stack Developer crafting modern web applications, desktop software, and games with passion and precision.",
+  github: "",
+  linkedin: "",
+  footerText: "Full Stack Web & Desktop Software Developer.",
 };
 
 export default function SettingsAdmin() {

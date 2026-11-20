@@ -1,136 +1,191 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { HiMenuAlt3, HiX } from "react-icons/hi";
-import MagneticLink from "./MagneticLink";
+import { useEffect, useState } from "react";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Services", href: "#services" },
-  { name: "Projects", href: "#projects" },
-  { name: "Experience", href: "#experience" },
-  { name: "Education", href: "#education" },
-  { name: "Contact", href: "#contact" },
+  { name: "ABOUT", href: "#about" },
+  { name: "SKILLS", href: "#skills" },
+  { name: "SERVICES", href: "#services" },
+  { name: "PROJECTS", href: "#projects" },
+  { name: "EXPERIENCE", href: "#experience" },
+  { name: "EDUCATION", href: "#education" },
 ];
+
+const ringOuterRadii = [166, 230, 294, 358, 422, 486];
+const ringColors = [
+  "#F4F8FA",
+  "#FCE2D6",
+  "#F9C0A8",
+  "#F59E7B",
+  "#1A5663",
+  "#0F3D47",
+];
+const radialLayers = navLinks.map((link, index) => ({ link, index })).reverse();
+
+function getRingPath(outerRadius: number) {
+  return [
+    "M 520 0",
+    `L 520 ${outerRadius}`,
+    `A ${outerRadius} ${outerRadius} 0 0 1 ${520 - outerRadius} 0`,
+    "Z",
+  ].join(" ");
+}
+
+function getLabelPath(radius: number) {
+  return `M ${520 - radius} 0 A ${radius} ${radius} 0 0 0 520 ${radius}`;
+}
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+    if (!isOpen) return;
 
-      const sections = navLinks.map((link) => link.href.slice(1));
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= 150) {
-            setActiveSection(sections[i]);
-            break;
-          }
-        }
-      }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   return (
-    <motion.nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "glass py-3" : "py-6"
-      }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <motion.a
-          href="#home"
-          className="text-2xl font-bold neon-text"
-          whileHover={{ scale: 1.05 }}
+    <>
+      <header className="fixed left-0 right-0 top-0 z-50 pointer-events-none bg-transparent">
+        <nav
+          aria-label="Main navigation"
+          className="section-container pointer-events-none flex min-h-16 items-center justify-between gap-3 py-3"
         >
-          AB<span className="text-soft-peach">.</span>
-        </motion.a>
-
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`relative text-sm font-medium transition-colors duration-300 ${
-                activeSection === link.href.slice(1)
-                  ? "text-soft-peach"
-                  : "text-deep-teal/75 hover:text-deep-teal"
-              }`}
-            >
-              {link.name}
-              {activeSection === link.href.slice(1) && (
-                <motion.div
-                  className="absolute -bottom-1 left-0 right-0 h-[2px]"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #0F3D47, #F59E7B)",
-                  }}
-                  layoutId="activeSection"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
-              )}
-            </a>
-          ))}
-        </div>
-
-        {/* Hire Me button (desktop) */}
-        <div className="hidden md:block">
-          <MagneticLink href="#contact" className="btn-primary">
-            <span>Hire Me</span>
-          </MagneticLink>
-        </div>
-
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden text-2xl text-soft-peach z-50"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <HiX /> : <HiMenuAlt3 />}
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="fixed inset-0 glass-strong md:hidden flex flex-col items-center justify-center gap-8"
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3 }}
+          <a
+            href="#home"
+            className="pointer-events-auto relative z-50 shrink-0 text-2xl font-bold tracking-tight text-deep-teal"
+            aria-label="Ashish Biswas home"
           >
-            {navLinks.map((link, i) => (
-              <motion.a
+            AB<span className="text-soft-peach">.</span>
+          </a>
+
+          <div className="pointer-events-none ml-auto flex items-center gap-2 sm:gap-3">
+            <a
+              href="https://wa.me/8801744502112?text=Hello%20Ashish%2C%20I%20came%20across%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project.%20Could%20you%20share%20your%20availability%3F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button-primary pointer-events-auto relative z-30 min-h-11 rounded-lg px-3 py-2 text-xs sm:px-4 sm:text-sm"
+            >
+              Hire Me <span aria-hidden="true">↗</span>
+            </a>
+
+            <button
+              type="button"
+              className={`nav-menu-toggle pointer-events-auto group relative z-50 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-deep-teal/15 bg-ice-white/60 text-deep-teal transition-[transform,color,background-color,border-color] hover:border-soft-peach hover:bg-soft-peach/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-soft-peach ${
+                isOpen
+                  ? "translate-x-[22px] scale-[0.88] min-[1230px]:translate-x-[34px]"
+                  : ""
+              }`}
+              onClick={() => setIsOpen((open) => !open)}
+              aria-expanded={isOpen}
+              aria-controls="radial-navigation"
+              aria-label={
+                isOpen ? "Close navigation menu" : "Open navigation menu"
+              }
+            >
+              <span
+                className={`nav-menu-line nav-menu-line--top ${
+                  isOpen ? "nav-menu-line--open" : ""
+                }`}
+              />
+              <span
+                className={`nav-menu-line nav-menu-line--middle ${
+                  isOpen ? "nav-menu-line--open" : ""
+                }`}
+              />
+              <span
+                className={`nav-menu-line nav-menu-line--bottom ${
+                  isOpen ? "nav-menu-line--open" : ""
+                }`}
+              />
+            </button>
+          </div>
+        </nav>
+
+      <nav
+        id="radial-navigation"
+        aria-label="Section navigation"
+        aria-hidden={!isOpen}
+        className={`radial-menu-overlay pointer-events-none fixed inset-0 z-40 ${
+          isOpen ? "radial-menu-overlay--open" : ""
+        }`}
+      >
+        <button
+          type="button"
+          className="radial-menu-backdrop absolute inset-0"
+          onClick={() => setIsOpen(false)}
+          aria-label="Dismiss navigation overlay"
+          tabIndex={isOpen ? 0 : -1}
+        />
+
+        <svg
+          className="radial-menu-canvas fixed right-0 top-0 z-40"
+          viewBox="0 0 520 520"
+        >
+          <defs>
+            {navLinks.map((link, index) => {
+              const outerRadius = ringOuterRadii[index];
+              const labelRadius = outerRadius - (index === 0 ? 8 : 31);
+
+              return (
+                <path
+                  key={link.name}
+                  id={`radial-menu-label-${index}`}
+                  d={getLabelPath(labelRadius)}
+                />
+              );
+            })}
+          </defs>
+
+          {radialLayers.map(({ link, index }) => {
+            const outerRadius = ringOuterRadii[index];
+            const isLightRing = index < 4;
+
+            return (
+              <g
                 key={link.name}
-                href={link.href}
-                className="text-2xl font-medium text-deep-teal/85 hover:text-soft-peach transition-colors"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                onClick={() => setIsOpen(false)}
+                className="radial-menu-ring"
+                data-open={isOpen}
+                style={{ transitionDelay: `${index * 40}ms` }}
               >
-                {link.name}
-              </motion.a>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+                <a
+                  href={link.href}
+                  className="radial-menu-link"
+                  aria-label={link.name}
+                  tabIndex={isOpen ? 0 : -1}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <path
+                    className="radial-menu-shape"
+                    d={getRingPath(outerRadius)}
+                    fill={ringColors[index]}
+                    stroke="none"
+                  />
+                  <text
+                    className={`radial-menu-label ${
+                      isLightRing ? "" : "radial-menu-label--light"
+                    }`}
+                  >
+                    <textPath
+                      href={`#radial-menu-label-${index}`}
+                      startOffset="50%"
+                      textAnchor="middle"
+                    >
+                      {link.name}
+                    </textPath>
+                  </text>
+                </a>
+              </g>
+            );
+          })}
+        </svg>
+      </nav>
+      </header>
+    </>
   );
 }
