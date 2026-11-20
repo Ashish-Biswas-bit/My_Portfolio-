@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { db, doc, onSnapshot } from "@/lib/supabase-db";
+
+const defaultName = "Ashish Biswas";
 
 const navLinks = [
   { name: "ABOUT", href: "#about" },
@@ -37,6 +40,35 @@ function getLabelPath(radius: number) {
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [profile, setProfile] = useState({
+    name: defaultName,
+    avatarUrl: "",
+  });
+  const [avatarLoadFailed, setAvatarLoadFailed] = useState(false);
+
+  useEffect(
+    () =>
+      onSnapshot(
+        doc(db, "siteContent", "hero"),
+        (snapshot) => {
+          const data = snapshot.exists() ? snapshot.data() : {};
+          setProfile({
+            name:
+              typeof data.name === "string" && data.name.trim()
+                ? data.name.trim()
+                : defaultName,
+            avatarUrl:
+              typeof data.avatarUrl === "string" &&
+              /^https:\/\//i.test(data.avatarUrl)
+                ? data.avatarUrl
+                : "",
+          });
+          setAvatarLoadFailed(false);
+        },
+        (error) => console.error("Unable to load navbar profile image:", error)
+      ),
+    []
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -58,10 +90,32 @@ export default function Navbar() {
         >
           <a
             href="#home"
-            className="pointer-events-auto relative z-50 shrink-0 text-2xl font-bold tracking-tight text-deep-teal"
+            className="pointer-events-auto relative z-50 flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-deep-teal/10 bg-ice-white shadow-sm"
             aria-label="Ashish Biswas home"
           >
-            AB<span className="text-soft-peach">.</span>
+            {profile.avatarUrl && !avatarLoadFailed ? (
+              <img
+                src={profile.avatarUrl}
+                alt={`${profile.name} profile`}
+                className="h-full w-full object-cover"
+                onError={() => setAvatarLoadFailed(true)}
+              />
+            ) : (
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                className="h-6 w-6 text-deep-teal/45"
+              >
+                <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+                <path
+                  d="M5.5 20c.7-3.5 3.1-5.3 6.5-5.3s5.8 1.8 6.5 5.3"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            )}
           </a>
 
           <div className="pointer-events-none ml-auto flex items-center gap-2 sm:gap-3">

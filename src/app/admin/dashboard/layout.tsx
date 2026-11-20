@@ -17,6 +17,7 @@ import {
   FiLogOut,
   FiMenu,
   FiX,
+  FiArrowUpRight,
 } from "react-icons/fi";
 
 const navItems = [
@@ -38,6 +39,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const activePage =
+    navItems.find((item) => item.href === pathname)?.name ?? "Dashboard";
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
@@ -62,25 +65,48 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-ice-white text-deep-teal flex">
-      {/* Sidebar */}
+    <div className="admin-shell min-h-screen bg-ice-white text-deep-teal">
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-deep-teal/10 flex flex-col transition-transform duration-300 
+        id="admin-sidebar"
+        className={`admin-sidebar fixed inset-y-0 left-0 z-50 flex w-[17rem] flex-col border-r border-deep-teal/10 bg-white transition-transform duration-300
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
       >
-        <div className="p-5 border-b border-deep-teal/10 flex items-center justify-between">
-          <Link href="/admin/dashboard" className="text-xl font-bold">
-            AB<span className="text-soft-peach">.</span> Admin
-          </Link>
-          <button
-            className="lg:hidden text-deep-teal/75"
+        <div className="flex items-center justify-between border-b border-deep-teal/10 px-6 py-5">
+          <Link
+            href="/admin/dashboard"
+            className="group flex min-w-0 items-center gap-3"
             onClick={() => setSidebarOpen(false)}
           >
-            <FiX size={20} />
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-deep-teal text-sm font-bold tracking-tight text-ice-white shadow-sm">
+              AB<span className="text-soft-peach">.</span>
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-semibold text-deep-teal">
+                Portfolio Studio
+              </span>
+              <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.16em] text-deep-teal/45">
+                Admin workspace
+              </span>
+            </span>
+          </Link>
+          <button
+            type="button"
+            aria-label="Close admin navigation"
+            aria-controls="admin-sidebar"
+            className="rounded-lg p-2 text-deep-teal/60 transition hover:bg-deep-teal/5 hover:text-deep-teal lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <FiX aria-hidden="true" size={19} />
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+        <nav
+          aria-label="Admin sections"
+          className="flex-1 space-y-1 overflow-y-auto px-3 py-5"
+        >
+          <p className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-deep-teal/40">
+            Manage content
+          </p>
           {navItems.map((item) => {
             const active = pathname === item.href;
             return (
@@ -88,58 +114,98 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 key={item.name}
                 href={item.href}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                aria-current={active ? "page" : undefined}
+                className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
                   active
-                    ? "bg-soft-peach/10 text-soft-peach"
-                    : "text-deep-teal/75 hover:bg-white hover:text-deep-teal"
+                    ? "bg-deep-teal text-ice-white shadow-sm"
+                    : "text-deep-teal/65 hover:bg-deep-teal/[0.04] hover:text-deep-teal"
                 }`}
               >
-                <item.icon size={18} />
+                <item.icon
+                  aria-hidden="true"
+                  size={17}
+                  className={active ? "text-soft-peach" : "text-deep-teal/45 group-hover:text-soft-peach"}
+                />
                 {item.name}
+                {active && (
+                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-soft-peach" />
+                )}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-deep-teal/10">
+        <div className="border-t border-deep-teal/10 p-4">
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mb-3 flex items-center justify-between rounded-xl border border-deep-teal/10 bg-ice-white px-3 py-2.5 text-xs font-medium text-deep-teal/70 transition hover:border-soft-peach/60 hover:text-deep-teal"
+          >
+            View live portfolio
+            <FiArrowUpRight aria-hidden="true" size={15} />
+          </a>
           <button
             onClick={() => signOut(auth)}
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-deep-teal/60 transition-colors hover:bg-red-50 hover:text-red-600"
           >
-            <FiLogOut size={18} />
+            <FiLogOut aria-hidden="true" size={17} />
             Sign Out
           </button>
         </div>
       </aside>
 
-      {/* Main content */}
-      <div className="flex-1 lg:ml-64">
-        {/* Top bar */}
-        <header className="sticky top-0 z-40 bg-ice-white/80 backdrop-blur-md border-b border-deep-teal/10 px-4 py-3 flex items-center justify-between">
+      <div className="min-h-screen lg:pl-[17rem]">
+        <header className="admin-topbar sticky top-0 z-40 flex min-h-[4.5rem] items-center justify-between border-b border-deep-teal/[0.07] bg-ice-white/85 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-10">
           <button
-            className="lg:hidden text-deep-teal/75"
+            type="button"
+            aria-label="Open admin navigation"
+            aria-controls="admin-sidebar"
+            aria-expanded={sidebarOpen}
+            className="mr-3 rounded-xl border border-deep-teal/10 bg-white p-2.5 text-deep-teal transition hover:border-soft-peach/60 hover:bg-soft-peach/10 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
-            <FiMenu size={22} />
+            <FiMenu aria-hidden="true" size={19} />
           </button>
 
-          <div className="flex items-center gap-3 ml-auto">
-            <span className="text-sm text-deep-teal/70">{user.email}</span>
-            <div className="w-8 h-8 rounded-full bg-soft-peach/20 border border-soft-peach/40 flex items-center justify-center text-xs font-bold text-soft-peach">
-              A
+          <div
+            aria-label={`Admin workspace, ${activePage}`}
+            className="flex min-w-0 items-center gap-2 text-xs sm:text-sm"
+          >
+            <span className="hidden text-deep-teal/45 sm:inline">
+              Workspace
+            </span>
+            <span aria-hidden="true" className="text-deep-teal/30">
+              /
+            </span>
+            <span className="truncate font-semibold text-deep-teal">
+              {activePage}
+            </span>
+          </div>
+
+          <div className="ml-auto flex min-w-0 items-center gap-3 pl-3">
+            <span className="hidden max-w-56 truncate text-xs text-deep-teal/55 sm:block">
+              {user.email}
+            </span>
+            <div
+              aria-hidden="true"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-soft-peach/40 bg-soft-peach/15 text-xs font-bold uppercase text-deep-teal"
+            >
+              {user.email?.charAt(0) || "A"}
             </div>
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="p-4 md:p-6 lg:p-8">{children}</main>
+        <main className="admin-content mx-auto w-full max-w-[90rem] px-4 py-7 sm:px-6 sm:py-9 lg:px-10 lg:py-10">
+          {children}
+        </main>
       </div>
 
-      {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 z-40 bg-deep-teal/40 backdrop-blur-[2px] lg:hidden"
           onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
         />
       )}
     </div>

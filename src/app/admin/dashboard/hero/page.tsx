@@ -15,14 +15,42 @@ const emptyHero: HeroData = {
   stats: [],
 };
 
+function getHeroErrorMessage(error: unknown) {
+  const errorCode =
+    typeof error === "object" && error !== null && "code" in error
+      ? error.code
+      : undefined;
+
+  if (errorCode === "PGRST205" || errorCode === "42P01") {
+    return "Supabase is missing public.portfolio_content. Run scripts/supabase-schema.sql in the Supabase SQL Editor.";
+  }
+
+  if (error instanceof Error) return error.message;
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof error.message === "string"
+  ) {
+    return error.message;
+  }
+
+  return "Unknown Supabase error.";
+}
+
 export default function HeroAdmin() {
   const [data, setData] = useState<HeroData>(emptyHero);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    getDoc(doc(db, "siteContent", "hero")).then((snap) => {
-      if (snap.exists()) setData(snap.data() as HeroData);
-    });
+    void getDoc(doc(db, "siteContent", "hero"))
+      .then((snap) => {
+        if (snap.exists()) setData(snap.data() as HeroData);
+      })
+      .catch((error: unknown) => {
+        console.error("Unable to load hero settings:", error);
+        toast.error(getHeroErrorMessage(error));
+      });
   }, []);
 
   const save = async () => {
@@ -30,10 +58,12 @@ export default function HeroAdmin() {
     try {
       await setDoc(doc(db, "siteContent", "hero"), data);
       toast.success("Hero section saved!");
-    } catch {
-      toast.error("Failed to save");
+    } catch (error) {
+      console.error("Failed to save hero section:", error);
+      toast.error(getHeroErrorMessage(error));
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   return (
