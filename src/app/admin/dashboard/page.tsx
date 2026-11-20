@@ -106,8 +106,8 @@ export default function DashboardHome() {
             1. Go to each section to add/edit/delete content
           </li>
           <li>
-            2. Upload images — they auto-save to Cloudinary &amp; links are stored
-            in Supabase
+            2. Upload project images or videos to Cloudinary, then save the
+            project to store its media URL in Supabase
           </li>
           <li>
             3. Changes reflect on the live site in real-time

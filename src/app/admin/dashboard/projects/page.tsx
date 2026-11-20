@@ -15,6 +15,7 @@ import {
 import ImageUploader from "@/components/admin/ImageUploader";
 import toast, { Toaster } from "react-hot-toast";
 import { FiPlus, FiTrash2, FiEdit2, FiX } from "react-icons/fi";
+import { isVideoUrl } from "@/lib/cloudinary";
 import type { ProjectData } from "@/lib/useContent";
 
 const empty: Omit<ProjectData, "id"> = {
@@ -101,7 +102,18 @@ export default function ProjectsAdmin() {
           >
             <div className="flex items-center gap-4">
               {item.image.startsWith("http") ? (
-                <img src={item.image} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                isVideoUrl(item.image) ? (
+                  <video
+                    src={item.image}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    aria-label={`${item.title} video preview`}
+                    className="w-12 h-12 rounded-lg object-cover"
+                  />
+                ) : (
+                  <img src={item.image} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                )
               ) : (
                 <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center text-2xl">
                   {item.image || "📁"}
@@ -186,7 +198,8 @@ export default function ProjectsAdmin() {
               </div>
 
               <ImageUploader
-                label="Project Image (or emoji)"
+                label="Project Image or Video"
+                allowVideo
                 value={form.image.startsWith("http") ? form.image : ""}
                 onChange={(url) => setForm({ ...form, image: url })}
               />

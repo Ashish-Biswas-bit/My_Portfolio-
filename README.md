@@ -40,9 +40,16 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-publishable-key
 node --env-file=.env.local scripts/seed.mjs
 ```
 
-Cloudinary remains responsible for image uploads. Set
-`NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` and
-`NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` in `.env.local`.
+## Cloudinary media uploads
+
+1. Create an **unsigned** Cloudinary upload preset and allow the image and video
+   formats you want to use. Restrict its allowed formats and file size in
+   Cloudinary.
+2. Set `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` and
+   `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` in `.env.local`.
+3. Restart the Next.js server. In **Admin > Projects**, upload an image or video
+   and save the project. Its Cloudinary URL is stored in Supabase and appears on
+   the portfolio through the live project feed.
 
 Add your public contact details in **Admin > Settings**. The contact form opens a
 pre-filled email draft in the visitor's email app; it does not send messages to

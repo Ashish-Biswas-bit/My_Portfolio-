@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FiArrowUpRight, FiGithub } from "react-icons/fi";
 import SectionWrapper from "./SectionWrapper";
 import { db, collection, onSnapshot, query, orderBy } from "@/lib/supabase-db";
+import { isVideoUrl } from "@/lib/cloudinary";
 import type { ProjectData } from "@/lib/useContent";
 
 const categories = ["All", "Full Stack Web", "Desktop Software"] as const;
@@ -68,11 +69,13 @@ export default function Projects() {
     () =>
       projects.filter((project) => {
         const category = getCategory(project.category);
-        const hasRealLink =
-          isExternalUrl(project.github) || isExternalUrl(project.live);
+        const hasPublicContent =
+          isExternalUrl(project.image) ||
+          isExternalUrl(project.github) ||
+          isExternalUrl(project.live);
         return (
           category !== null &&
-          hasRealLink &&
+          hasPublicContent &&
           (activeCategory === "All" || category === activeCategory)
         );
       }),
@@ -123,7 +126,8 @@ export default function Projects() {
             const projectTech = Array.isArray(project.tech)
               ? project.tech.filter((technology) => verifiedStack.has(technology))
               : [];
-            const hasImage = isExternalUrl(project.image);
+            const hasMedia = isExternalUrl(project.image);
+            const hasVideo = hasMedia && isVideoUrl(project.image);
             const hasGithub = isExternalUrl(project.github);
             const hasLive = isExternalUrl(project.live);
 
@@ -133,7 +137,16 @@ export default function Projects() {
                   className="surface-card project-card group overflow-hidden"
               >
                 <div className="project-visual">
-                  {hasImage ? (
+                  {hasVideo ? (
+                    <video
+                      src={project.image}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      aria-label={`${project.title} project video`}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : hasMedia ? (
                     <img
                       src={project.image}
                       alt={`${project.title} project preview`}
@@ -204,8 +217,8 @@ export default function Projects() {
             Project write-ups are being prepared.
           </h3>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-deep-teal/65">
-            Only projects with a working demo or source link are shown here.
-            Get in touch to discuss my web and desktop software work.
+            Projects with uploaded media or a working demo/source link appear
+            here. Get in touch to discuss my web and desktop software work.
           </p>
           <a href="#contact" className="button-secondary mt-6">
             Discuss a project <FiArrowUpRight aria-hidden="true" />
